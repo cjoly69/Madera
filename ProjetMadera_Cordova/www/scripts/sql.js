@@ -9,6 +9,9 @@ var cnx;
 // on tente l'ouverture de la base de données au démarrage
 document.addEventListener("deviceready", OuvertureBddLocale, false);
 
+// utilisation de SQL Lite (ancienne méthode dépréciée)
+// https://cordova.apache.org/docs/en/latest/cordova/storage/storage.html#sqlite-plugin
+
 function OuvertureBddLocale() {
     console.log("Tentative d'accès à la base de données locale");
 
@@ -36,7 +39,9 @@ function Echec(cnx, err) {
 }
 
 function CreationBdd(cnx) {
+    // https://github.com/litehelpers/Cordova-sqlite-storage#using-draft-standard-transaction-api
     console.log("Début du requétage.");
+    this.cnx = cnx;
 
     // on supprime les précédentes données
     cnx.executeSql("DROP TABLE IF EXISTS " + nomTable);
@@ -45,19 +50,19 @@ function CreationBdd(cnx) {
     cnx.executeSql("CREATE TABLE IF NOT EXISTS " + nomTable + " (id, prenom, nom)");
 }
 
-// l'objet XHR (Ajax) renvoi ici les données reçues
-// https://openclassrooms.com/fr/courses/245710-ajax-et-lechange-de-donnees-en-javascript/244798-lobjet-xmlhttprequest
-xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-        // données reçues
-        RemplissageBdd(xhr.responseText)
-    }
-};
-
 
 function TelechargementDonnees() {
     console.log("Envoi de la demande XHR.")
     xhr = new XMLHttpRequest(); // création d'un nouvel objet AJAX
+
+    // l'objet XHR (Ajax) renvoi ici les données reçues
+    // https://openclassrooms.com/fr/courses/245710-ajax-et-lechange-de-donnees-en-javascript/244798-lobjet-xmlhttprequest
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+            // données reçues
+            RemplissageBdd(xhr.responseText)
+        }
+    };
 
     xhr.open("POST", url, true); // méthode d'envoi des données + url
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); // nécessaire uniquement en POST
@@ -69,10 +74,11 @@ function RemplissageBdd(json) {
     // on converti le paramètre en objet JSON
 
     var objetJson = JSON.parse(json);
-    for (var j in objetJson) {
+    objetJson.forEach(function (j) {
         console.log("Ajout d'une entrée dans la base de données locale.")
-        cnx.executeSql("INSERT INTO " + nomTable + "(id, prenom, nom) VALUES (" + j["id"] + ", " + j["nom"] + ", " + j["prenom"] + ")");
-    }
+        req = 'INSERT INTO ' + nomTable + ' (`id`, `prenom`, `nom`) VALUES (' + j["id"] + ', "' + j["nom"] + '", "' + j["prenom"] + '")';
+        cnx.executeSql(req);
+    });
 }
 
 // https://www.c-sharpcorner.com/UploadFile/c25b6d/sql-database-in-apache-cordovaphonegap/
