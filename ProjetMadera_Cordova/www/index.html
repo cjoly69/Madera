@@ -1,29 +1,49 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-    <head>
+<head>
     <!--
         Personnalisez la stratégie de sécurité de contenu dans la balise meta ci-dessous selon vos besoins. Ajoutez 'unsafe-inline' à default-src pour activer JavaScript directement dans les lignes.
         Pour obtenir des détails, consultez http://go.microsoft.com/fwlink/?LinkID=617521
     -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-        
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>ProjetMaderaCordova</title>
-    </head>
+    <!--d'après https://www.grafikart.fr/forum/topics/19724'-->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="Content-Security-Policy"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <title>ProjetMaderaCordova</title>
+</head>
     <body>
         <div class="app">
-            <h1>Apache Cordova</h1>
+            <h1>Madera</h1>
             <div id="deviceready" class="blink">
-                <p class="event listening">Connexion à l'appareil</p>
-                <p class="event received">L'appareil est prêt</p>
+                <p class="event listening">Chargement de votre application</p>
+                <p class="event received">Application prête</p>
+            </div>
+
+            <div id="appPrete" class="masque">
+                <button id="telechDonnees" onclick="TelechargementDonnees()">Téléchargement</button>
+                <button id="consultBddLoc" onclick="ConsultationBddLoc">Consultation</button>
+
+                <table id="tableDemo">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="scripts/platformOverrides.js"></script>
         <script type="text/javascript" src="scripts/index.js"></script>
+        <script type="text/javascript" src="scripts/sql.js"></script>
     </body>
 </html>
