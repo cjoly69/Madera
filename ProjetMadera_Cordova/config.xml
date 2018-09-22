@@ -109,5 +109,8 @@
     <splash src="res/screens/windows/SplashScreen.scale-240.png" width="1152" height="1920" />
     <splash src="res/screens/windows/SplashScreenPhone.scale-240.png" width="1152" height="1920" />
   </platform>
+  <preference name="KeepRunning" value="True" />
+  <preference name="BackupWebStorage" value="local" />
+  <preference name="target-device" value="universal" />
   <plugin name="cordova-sqlite-storage" spec="~2.4.0" />
 </widget>
