@@ -1,0 +1,120 @@
+html, body{
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    
+    font-family: "Calibri";
+}
+
+/* MENU */
+
+#menu {
+    height: 5%;
+    min-height: 20px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    align-items: center;
+}
+
+#menu > div {
+    text-align: center;
+    height: 100%;
+    display: flex;
+}
+
+#menu > div > span {
+    margin: auto;
+}
+
+#menu > div+div {
+    border-left: black solid 1px;
+}
+
+.btn {
+    width: 40px;
+}
+
+.infosProjet {
+    flex: 1;
+}
+
+/* PAGE */
+
+#page {
+    min-height: 90%;
+}
+
+#page::after{
+    content: "";
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 30%;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;  
+    opacity: 0.10;
+}
+
+#page > .active {
+    visibility: visible;
+}
+
+#page > div {
+    visibility: hidden;
+}
+
+/* INFOS DEVIS */
+
+#piedDevis {
+    height: 5%;
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    
+    align-items: center;
+}
+
+#piedDevis > div {
+    height: 100%;
+    display: flex;
+}
+
+#piedDevis > div > div {
+    margin: auto 0px;
+    padding: 0px 5px;
+}
+
+#piedDevis > div+div {
+    border-left : black solid 1px;
+}
+
+#totaux {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    
+    flex: 1;
+}
+
+#ht-tva {
+    flex: 1;
+    font-size: 90%;
+}
+
+#ttc {
+    justify-content: flex-end;
+    margin: auto;
+    font-size: 130%;
+}
+
+#ttc > label {
+    font-weight: bold;
+}

@@ -1,0 +1,23 @@
+/*
+    vert foncé : #056839
+    vert clair : #8dc63f
+    marron : #6e6356
+*/
+
+
+#menu {
+    background-color: #8dc63f;
+}
+
+#menu .btnActif {
+    background-color: #056839;
+    color: white;
+}
+
+#page::after{
+    background-image: url("./img/logoMadera.svg");
+}
+
+#piedDevis {
+    background-color: #6e6356;
+}
