@@ -8,38 +8,120 @@
     <link rel="stylesheet" type="text/css" media="screen" href="./style/arch.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="./style/jour.css" />
     <!-- <link rel="stylesheet" type="text/css" media="screen" href="./style/nuit.css" /> -->
-    <script src="main.js"></script>
 </head>
     <body>
         
         <!-- MENU -->
         <div id="menu">
-            <div class="btn btnActif">
+            <a class="btn btnActif" href="#" name="devis" onclick="changePage">
                 <span>D</span>
-            </div>
-            <div class="btn">
+            </a>
+            <a class="btn" href="#" name="conf" onclick="changePage">
                 <span>C</span>
-            </div>
-            <div class="btn">
+            </a>
+            <a class="btn" href="#" name="paiem" onclick="changePage">
                 <span>P</span>
-            </div>
+            </a>
             <div class="infosProjet">
                 <span>Devis du jj/mm/aaaa - projet "Villa Océane" (client Jean-Michel SARTRE)</span>
             </div>
-            <div class="btn">
+            <a class="btn">
                 <span>?</span>
-            </div>
+            </a>
         </div>
 
         <div id="page">
             <div id="devis" class="active">
-                Contenu du devis
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Gamme
+                            </th>
+                            <th>
+                                Modèle
+                            </th>
+                            <th>
+                                Coupe de principe
+                            </th>
+                            <th>
+                                Prix
+                            </th>
+                            <th>
+                                Opérations
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="saisieLignDevis">
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input type="text" pattern="numeric">
+                            </td>
+                            <td>
+                                <button class="btnAjLign">Ajouter</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Bois</td>
+                            <td>Mur 1</td>
+                            <td>A</td>
+                            <td>1 250 €</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Bois</td>
+                            <td>Mur 2</td>
+                            <td>A</td>
+                            <td>1 500 €</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Bois</td>
+                            <td>Mur porte-fenêtre</td>
+                            <td>C</td>
+                            <td>4 000 €</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Bois</td>
+                            <td>Mur intérieur 1</td>
+                            <td>A</td>
+                            <td>1 250 €</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div id="conf">
-                Contenu de la configuration
+                <img src="./style/img/pages/configGamme.svg" alt="page de configuration des gammes">
             </div>
             <div id="paiem">
-                Contenu de la section paiement
+                <img src="./style/img/pages/paiement.svg" alt="page des paiements">
             </div>
         </div>
 
@@ -72,4 +154,6 @@
             </div>
         </div>
     </body>
+
+    <script src="./js/main.js"></script>
 </html>

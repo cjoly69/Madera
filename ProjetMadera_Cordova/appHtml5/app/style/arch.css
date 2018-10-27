@@ -10,7 +10,7 @@ html, body{
 
 #menu {
     height: 5%;
-    min-height: 20px;
+    min-height: 40px;
 
     display: flex;
     flex-direction: row;
@@ -19,17 +19,24 @@ html, body{
     align-items: center;
 }
 
-#menu > div {
+#menu > div,
+#menu > a {
     text-align: center;
     height: 100%;
     display: flex;
+    text-decoration: none;
+    color: black;
 }
 
-#menu > div > span {
+#menu > div > span,
+#menu > a > span {
     margin: auto;
 }
 
-#menu > div+div {
+#menu > div+div,
+#menu > a+div,
+#menu > a+a,
+#menu > div+a {
     border-left: black solid 1px;
 }
 
@@ -42,10 +49,6 @@ html, body{
 }
 
 /* PAGE */
-
-#page {
-    min-height: 90%;
-}
 
 #page::after{
     content: "";
@@ -68,16 +71,112 @@ html, body{
 
 #page > div {
     visibility: hidden;
+    height: 0px;
+}
+
+#page > #conf,
+#page > #paiem {
+    display: flex;
+    width: 100%;
+}
+
+#page > #conf > img,
+#page > #paiem > img {
+    margin: auto 10px;
+    vertical-align: middle;
+    
+    height: auto;
+    max-height: 90vh;
+    
+    width: calc(100% - 20px);
+}
+
+/* DEVIS */
+
+#devis table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#devis table td {
+    margin: 0px;
+    padding: 0px;
+}
+
+#devis table tbody tr {
+    height: 30px;
+}
+
+#devis table tbody td {
+    height: 30px;
+    margin: 0px 20px;
+    padding: 0px 20px;
+}
+
+#saisieLignDevis {
+    height: 50px !important;
+    opacity: 0.6;
+}
+
+#saisieLignDevis:hover {
+    opacity: 1;
+}
+
+#saisieLignDevis:active {
+    opacity: 1;
+}
+
+td > input,
+td > button {
+    width: 90%;
+    padding:6px 6px 6px 6px;
+	font:Bold 13px Arial;
+	border-radius:2px;
+	border:none;
+}
+
+td > input {
+    /*margin: auto 5%;*/
+    width: 100%;
+}
+
+#devis table td:last-of-type,
+#devis table th:last-of-type {
+    min-width: 80px;
+}
+
+.btnModLign {
+    background-image: url("./img/edition.svg") !important;
+    background-size: 70% auto !important;
+}
+
+.btnSuppLign {
+    background-image: url("./img/supprimer.svg") !important;
+    background-size: 40% auto !important;
+}
+
+.btnModLign,
+.btnSuppLign {
+    width: 44%;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    height: 80%;
 }
 
 /* INFOS DEVIS */
 
 #piedDevis {
     height: 5%;
+    min-height: 40px;
     
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
     
     align-items: center;
 }
@@ -89,12 +188,13 @@ html, body{
 
 #piedDevis > div > div {
     margin: auto 0px;
-    padding: 0px 5px;
 }
 
 #piedDevis > div+div {
     border-left : black solid 1px;
 }
+
+
 
 #totaux {
     display: flex;

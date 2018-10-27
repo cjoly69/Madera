@@ -21,3 +21,26 @@
 #piedDevis {
     background-color: #6e6356;
 }
+
+#saisieLignDevis {
+    background-color: #a9a9a9 !important;
+}
+
+.btnAjLign {
+	background:#3ad336;
+	color:#fff;
+}
+
+.btnModLign {
+    background:#d38f36;
+	color:#fff;
+}
+
+.btnSuppLign {
+    background:#d34836;
+	color:#fff;
+}
+
+#devis > table > tbody > tr:nth-of-type(odd)  {
+    background-color: #efefef;
+}
