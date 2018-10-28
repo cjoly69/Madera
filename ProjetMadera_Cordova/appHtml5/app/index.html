@@ -52,7 +52,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="corpsDevis">
                         <tr id="saisieLignDevis">
                             <td>
                                 <input type="text">
@@ -67,11 +67,26 @@
                                 <input type="text" pattern="numeric">
                             </td>
                             <td>
-                                <button class="btnAjLign">Ajouter</button>
+                                <button id="ajLign" class="btnAjLign">Ajouter</button><!--
+                                    // solution du commentaire pour supprimer les espaces automatiques entre deux balises "inline"
+                                    // https://www.alsacreations.com/astuce/lire/1432-display-inline-block-espaces-indesirables.html
+                                --><button id="validModif" class="btnValidLign masqueBtn"></button>
+                                <button id="annulModif" class="btnSuppLign masqueBtn"></button>
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr id="modele">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr id="devL_1">
                             <td>Bois</td>
                             <td>Mur 1</td>
                             <td>A</td>
@@ -82,7 +97,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr id="devL_2">
                             <td>Bois</td>
                             <td>Mur 2</td>
                             <td>A</td>
@@ -93,7 +108,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr id="devL_3">
                             <td>Bois</td>
                             <td>Mur porte-fenêtre</td>
                             <td>C</td>
@@ -104,7 +119,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr id="devL_4">
                             <td>Bois</td>
                             <td>Mur intérieur 1</td>
                             <td>A</td>

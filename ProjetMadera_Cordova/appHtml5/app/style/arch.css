@@ -126,6 +126,10 @@ html, body{
     opacity: 1;
 }
 
+#modele {
+    display: none;
+}
+
 td > input,
 td > button {
     width: 90%;
@@ -145,6 +149,11 @@ td > input {
     min-width: 80px;
 }
 
+.btnValidLign {
+    background-image: url("./img/valide.svg") !important;
+    background-size: 60% auto !important;
+}
+
 .btnModLign {
     background-image: url("./img/edition.svg") !important;
     background-size: 70% auto !important;
@@ -155,12 +164,23 @@ td > input {
     background-size: 40% auto !important;
 }
 
+.btnValidLign,
 .btnModLign,
 .btnSuppLign {
     width: 44%;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     height: 80%;
+}
+
+.masqueBtn {
+    visibility: hidden;
+    height: 0px !important;
+    width: 0px !important;
+    min-width: 0px !important;
+    
+    margin: 0px !important;
+    padding: 0px !important;
 }
 
 /* INFOS DEVIS */
