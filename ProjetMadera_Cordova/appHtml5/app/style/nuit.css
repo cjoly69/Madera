@@ -1,43 +1,46 @@
-/*
-    vert foncé : #056839
-    vert clair : #8dc63f
-    marron : #6e6356
-*/
+body {
+    background-color: black;
+}
+
+tr {
+    color: white;
+}
+
+#connexion {
+    color: white;
+}
 
 #connexion > div+div {
     border-left: 1px solid #909090;
 }
 
-#logoConnexion > div:nth-of-type(1) {
-    background-image: url("./img/logoMadera.svg");
+#logoConnexion > div:nth-of-type(1),
+#page::after {
+    background-image: url("./img/logoMaderaBlanc.svg");
 }
 
 #validConnex {
-    background-color: green;
-    color: white;
+    background-color: #ffffffb3;
+    color: black;
 }
 
 #effacConnex {
-    border: 1px solid red !important;
-    background-color: white;
-    color: red;
-}
-
-#menu {
-    background-color: #8dc63f;
-}
-
-#menu .btnActif {
-    background-color: #056839;
+    border: 1px solid white !important;
+    background-color: #fff3;
     color: white;
 }
 
-#page::after{
-    background-image: url("./img/logoMadera.svg");
+#menu {
+    background-color: #eaeaea;
+}
+
+#menu .btnActif {
+    background-color: #686868;
+    color: white;
 }
 
 #piedDevis {
-    background-color: #6e6356;
+    background-color: #696969;
 }
 
 #saisieLignDevis {
@@ -76,4 +79,5 @@
 
 #devis > table > tbody > tr:nth-of-type(even)  {
     background-color: #efefef;
+    color: black;
 }

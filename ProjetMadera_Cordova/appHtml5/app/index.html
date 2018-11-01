@@ -6,168 +6,201 @@
     <title>Application Madera</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="./style/arch.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="./style/jour.css" />
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="./style/nuit.css" /> -->
+    <link id="cssNuit" rel="stylesheet" type="text/css" media="screen" href="./style/nuit.css" />
+    <link id="cssJour" rel="stylesheet" type="text/css" media="screen" href="./style/jour.css" />
 </head>
     <body>
         
-        <!-- MENU -->
-        <div id="menu">
-            <a class="btn btnActif" href="#" name="devis" onclick="changePage">
-                <span>D</span>
-            </a>
-            <a class="btn" href="#" name="conf" onclick="changePage">
-                <span>C</span>
-            </a>
-            <a class="btn" href="#" name="paiem" onclick="changePage">
-                <span>P</span>
-            </a>
-            <div class="infosProjet">
-                <span>Devis du jj/mm/aaaa - projet "Villa Océane" (client Jean-Michel SARTRE)</span>
+        <div id="connexion">
+            <div>
+                <div id="logoConnexion">
+                    <div></div>
+                    <div>Madera</div>
+                </div>
             </div>
-            <a class="btn">
-                <span>?</span>
-            </a>
-        </div>
+            <div>
+                <div id="formCnx">
+                    <label for="idUtilisateur">Nom d'utilisateur :</label><input type="text" name="idUtilisateur" id="idUtilisateur">
+                    <label for="mdpUtilisateur">Mot de passe:</label><input type="password" name="mdpUtilisateur" id="mdpUtilisateur">
 
-        <div id="page">
-            <div id="devis" class="active">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>
-                                Gamme
-                            </th>
-                            <th>
-                                Modèle
-                            </th>
-                            <th>
-                                Coupe de principe
-                            </th>
-                            <th>
-                                Prix
-                            </th>
-                            <th>
-                                Opérations
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpsDevis">
-                        <tr id="saisieLignDevis">
-                            <td>
-                                <input type="text">
-                            </td>
-                            <td>
-                                <input type="text">
-                            </td>
-                            <td>
-                                <input type="text">
-                            </td>
-                            <td>
-                                <input type="text" pattern="numeric">
-                            </td>
-                            <td>
-                                <button id="ajLign" class="btnAjLign">Ajouter</button><!--
-                                    // solution du commentaire pour supprimer les espaces automatiques entre deux balises "inline"
-                                    // https://www.alsacreations.com/astuce/lire/1432-display-inline-block-espaces-indesirables.html
-                                --><button id="validModif" class="btnValidLign masqueBtn"></button>
-                                <button id="annulModif" class="btnSuppLign masqueBtn"></button>
-                            </td>
-                        </tr>
+                    
 
-                        <tr id="modele">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <button class="btnModLign"></button>
-                                <button class="btnSuppLign"></button>
-                            </td>
-                        </tr>
-
-                        <tr id="devL_1">
-                            <td>Bois</td>
-                            <td>Mur 1</td>
-                            <td>A</td>
-                            <td>1 250 €</td>
-                            <td>
-                                <button class="btnModLign"></button>
-                                <button class="btnSuppLign"></button>
-                            </td>
-                        </tr>
-
-                        <tr id="devL_2">
-                            <td>Bois</td>
-                            <td>Mur 2</td>
-                            <td>A</td>
-                            <td>1 500 €</td>
-                            <td>
-                                <button class="btnModLign"></button>
-                                <button class="btnSuppLign"></button>
-                            </td>
-                        </tr>
-
-                        <tr id="devL_3">
-                            <td>Bois</td>
-                            <td>Mur porte-fenêtre</td>
-                            <td>C</td>
-                            <td>4 000 €</td>
-                            <td>
-                                <button class="btnModLign"></button>
-                                <button class="btnSuppLign"></button>
-                            </td>
-                        </tr>
-
-                        <tr id="devL_4">
-                            <td>Bois</td>
-                            <td>Mur intérieur 1</td>
-                            <td>A</td>
-                            <td>1 250 €</td>
-                            <td>
-                                <button class="btnModLign"></button>
-                                <button class="btnSuppLign"></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="conf">
-                <img src="./style/img/pages/configGamme.svg" alt="page de configuration des gammes">
-            </div>
-            <div id="paiem">
-                <img src="./style/img/pages/paiement.svg" alt="page des paiements">
+                    <div id="btnCnx">
+                        <button id="validConnex">Valider</button>
+                        <button id="effacConnex">Effacer</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="piedDevis">
-            <div id="infosClient">
-                <div>Information client</div>
+        <div id="estConnecte" class="masque">
+            <!-- MENU -->
+            <div id="menu">
+                <a class="btn btnActif" href="#" name="devis">
+                    <span>D</span>
+                </a>
+                <a class="btn" href="#" name="conf">
+                    <span>C</span>
+                </a>
+                <a class="btn" href="#" name="paiem">
+                    <span>P</span>
+                </a>
+                <div class="infosProjet">
+                    <span>Devis du jj/mm/aaaa - projet "Villa Océane" (client Jean-Michel SARTRE)</span>
+                </div>
+                <a class="btn" href="#" name="parametres" id="btnParams">
+                    <span>?</span>
+                </a>
             </div>
-            <div id="typeFinition">
+    
+            <div id="page">
+                <div id="devis" class="active">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Gamme
+                                </th>
+                                <th>
+                                    Modèle
+                                </th>
+                                <th>
+                                    Coupe de principe
+                                </th>
+                                <th>
+                                    Prix
+                                </th>
+                                <th>
+                                    Opérations
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpsDevis">
+                            <tr id="saisieLignDevis">
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text" pattern="numeric">
+                                </td>
+                                <td>
+                                    <button id="ajLign" class="btnAjLign">Ajouter</button><!--
+                                        // solution du commentaire pour supprimer les espaces automatiques entre deux balises "inline"
+                                        // https://www.alsacreations.com/astuce/lire/1432-display-inline-block-espaces-indesirables.html
+                                    --><button id="validModif" class="btnValidLign masque"></button>
+                                    <button id="annulModif" class="btnSuppLign masque"></button>
+                                </td>
+                            </tr>
+    
+                            <tr id="modele">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <button class="btnModLign"></button>
+                                    <button class="btnSuppLign"></button>
+                                </td>
+                            </tr>
+    
+                            <tr id="devL_1">
+                                <td>Bois</td>
+                                <td>Mur 1</td>
+                                <td>A</td>
+                                <td>1 250 €</td>
+                                <td>
+                                    <button class="btnModLign"></button>
+                                    <button class="btnSuppLign"></button>
+                                </td>
+                            </tr>
+    
+                            <tr id="devL_2">
+                                <td>Bois</td>
+                                <td>Mur 2</td>
+                                <td>A</td>
+                                <td>1 500 €</td>
+                                <td>
+                                    <button class="btnModLign"></button>
+                                    <button class="btnSuppLign"></button>
+                                </td>
+                            </tr>
+    
+                            <tr id="devL_3">
+                                <td>Bois</td>
+                                <td>Mur porte-fenêtre</td>
+                                <td>C</td>
+                                <td>4 000 €</td>
+                                <td>
+                                    <button class="btnModLign"></button>
+                                    <button class="btnSuppLign"></button>
+                                </td>
+                            </tr>
+    
+                            <tr id="devL_4">
+                                <td>Bois</td>
+                                <td>Mur intérieur 1</td>
+                                <td>A</td>
+                                <td>1 250 €</td>
+                                <td>
+                                    <button class="btnModLign"></button>
+                                    <button class="btnSuppLign"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="conf">
+                    <img src="./style/img/pages/configGamme.svg" alt="page de configuration des gammes">
+                </div>
+                <div id="paiem">
+                    <img src="./style/img/pages/paiement.svg" alt="page des paiements">
+                </div>
+            </div>
+    
+            <div id="piedDevis">
+                <div id="infosClient">
+                    <div>Information client</div>
+                </div>
+                <div id="typeFinition">
+                    <div>
+                        Finition :
+                        <select id="selectFin">
+                            <option value="1">Low-cost</option>
+                            <option value="2">Standard</option>
+                            <option value="3" selected>Premium</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="totaux">
+                    <div id="ht-tva">
+                        <div>
+                            Total HT : <span id="totalHt">910</span> €
+                        </div>
+                        <div>
+                            TVA : <span id="totalTva">182</span> €
+                        </div>
+                    </div>
+                    <div id="ttc">
+                        <label>TOTAL</label> : <span id="totalTtc">1 092</span> €
+                    </div>
+                </div>
+            </div>
+
+            <div id="parametres" class="masque">
                 <div>
-                    Finition :
-                    <select id="selectFin">
-                        <option value="1">Low-cost</option>
-                        <option value="2">Standard</option>
-                        <option value="3" selected>Premium</option>
-                    </select>
+                    <button id="btnPageJour">Jour</button>
+                    <button id="btnPageNuit" class="btnBase">Nuit</button>
                 </div>
-            </div>
-            <div id="totaux">
-                <div id="ht-tva">
-                    <div>
-                        Total HT : <span id="totalHt">910</span> €
-                    </div>
-                    <div>
-                        TVA : <span id="totalTva">182</span> €
-                    </div>
-                </div>
-                <div id="ttc">
-                    <label>TOTAL</label> : <span id="totalTtc">1 092</span> €
-                </div>
+                <button id="btnDeconnexion" class="btnBase">Se déconnecter</button>
             </div>
         </div>
+
     </body>
 
     <script src="./js/main.js"></script>

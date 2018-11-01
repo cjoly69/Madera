@@ -4,7 +4,95 @@ var numLigneDevisModif = -1;
 
 var estEnModification = false;
 
-// MENU /////////////////////////////////////////////////////////////
+var idUtilisateur = "legrand";
+var mdpUtilisateur = "passpass";
+var jeton = "4sd5fg1f1bqg51b5q1f3bg3f5q1b5gd1bq515b56dg1b3q5g1bd";
+
+var estModeJour = true;
+
+var estConnecte = false;
+
+function finChargementPage() {
+    // on regarde si un jeton de connexion est disponible
+    jetonTest = localStorage.getItem("jetonCnx");
+
+    if (jetonTest == jeton) {
+        estConnecte = true;
+    }
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+    if (!localStorage.getItem("estModeJour")) {
+        localStorage.setItem("estModeJour", estModeJour);
+    }
+    else {
+        // https://stackoverflow.com/a/264037
+        estModeJour = (localStorage.getItem("estModeJour") == true);
+    }
+    activationModeAff();
+
+
+    gestionConnexion();
+
+    if (!estConnecte) {
+        document.getElementById("idUtilisateur").value = idUtilisateur;
+        document.getElementById("mdpUtilisateur").value = mdpUtilisateur;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////
+// Connexion ////////////////////////////////////////////////////////
+
+function cnxUtilisateur(event) {
+    var nomBtn = event.srcElement.id;
+
+    switch(nomBtn) {
+        case "validConnex":
+            gestionConnexion();
+            break;
+        case "effacConnex":
+            document.getElementById("idUtilisateur").value = "";
+            document.getElementById("mdpUtilisateur").value = "";
+            break;
+    }
+}
+
+function decnxUtilisateur() {
+    localStorage.removeItem("jetonCnx");
+    estConnecte = false;
+    gestionConnexion();
+}
+
+function gestionConnexion() {
+    var idUt = document.getElementById("idUtilisateur").value;
+    var mdp = document.getElementById("mdpUtilisateur").value;
+
+    if (
+        idUt == idUtilisateur &&
+        mdpUtilisateur == mdp &&
+        !estConnecte
+    ) {
+        estConnecte = true;
+        localStorage.setItem("jetonCnx", jeton);
+    }
+
+    var formCnx = document.getElementById("connexion");
+    var accesPages = document.getElementById("estConnecte");
+
+    if (estConnecte) {
+        formCnx.classList.add("masque");
+        accesPages.classList.remove("masque");
+
+        document.getElementById("idUtilisateur").value = "";
+        document.getElementById("mdpUtilisateur").value = "";
+    }
+    else {
+        formCnx.classList.remove("masque");
+        accesPages.classList.add("masque");
+    }
+}
+
+/////////////////////////////////////////////////////////////////////
+// Menu /////////////////////////////////////////////////////////////
 
 function changePage(event) {
     var nomPage = event.srcElement.name;
@@ -15,24 +103,56 @@ function changePage(event) {
     }
 
     if (nomPage != undefined) {
-        // on désactive les boutons dans le menu pour activer celui de la page correspondante
-        desactiveBtn();
+        if (nomPage != "parametres") {
+            // on désactive les boutons dans le menu pour activer celui de la page correspondante
+            desactiveTsBtn();
 
-        // on active le bouton de destination
-        activeBtn(nomPage);
+            // on active le bouton de destination
+            activeBtn(nomPage);
 
-        // idem avec les pages
-        desactivePage();
-        activePage(nomPage);
+            // idem avec les pages
+            desactivePages();
+            activePage(nomPage);
+        }
+        else {
+            var params = document.getElementById("parametres")
+
+            if (params.classList.contains("masque")) {
+                params.classList.remove("masque");
+                activeBtn(nomPage);
+            }
+            else {
+                params.classList.add("masque");
+                desactiveBtn(nomPage);
+            }
+        }
+    }
+}
+
+// désactive le bouton
+function desactiveBtn(nomBtn) {
+    var children = document.getElementById("menu").children;
+    
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+
+        if (child.name == nomBtn) {
+            child.classList.remove("btnActif");
+            break;
+        }
     }
 }
 
 // retire la classe "btnActif" de tous les boutons du menu
-function desactiveBtn() {
+function desactiveTsBtn() {
     var children = document.getElementById("menu").children;
     
     for (var i = 0; i < children.length; i++) {
-        children[i].classList.remove("btnActif");
+        var child = children[i];
+
+        if (child.name != "parametres") {
+            child.classList.remove("btnActif");
+        }
     }
 }
 
@@ -51,7 +171,7 @@ function activeBtn(nomBtn) {
 }
 
 // retire la page actuellement visible
-function desactivePage() {
+function desactivePages() {
     var children = document.getElementById("page").children;
 
     for (var i = 0; i < children.length; i++) {
@@ -129,7 +249,7 @@ function ajoutLigneDevis() {
 
     var ligneSaisie = document.getElementById("saisieLignDevis");
 
-    // on copie une ligne du devis
+    // on copie le modèle d'une ligne du devis
     var nvlleLigne = document.getElementById("modele").cloneNode(true);
 
     // on applique les nouvelles propriétés 
@@ -210,10 +330,59 @@ function nettoyageSaisieLigne() {
 }
 
 /////////////////////////////////////////////////////////////////////
+// Paramètres ///////////////////////////////////////////////////////
+
+function panneauParametres(event) {
+    var nomBtn = event.srcElement.id;
+    
+    switch(nomBtn) {
+        case "btnPageJour":
+            estModeJour = true;
+            activationModeAff();
+            break;
+
+        case "btnPageNuit":
+            estModeJour = false;
+            activationModeAff();
+            break;
+
+        case "btnDeconnexion":
+            decnxUtilisateur();
+            break;
+    }
+}
+
+// applique le thème de jour ou de nuit
+function activationModeAff() {
+    if (estModeJour) {
+        document.getElementById("btnPageJour").classList.remove("btnBase");
+        document.getElementById("btnPageNuit").classList.add("btnBase");
+    }
+    else {
+        document.getElementById("btnPageNuit").classList.remove("btnBase");
+        document.getElementById("btnPageJour").classList.add("btnBase");
+    }
+
+    document.getElementById("cssJour").disabled = !estModeJour;
+    document.getElementById("cssNuit").disabled = estModeJour;
+
+    localStorage.setItem("estModeJour", estModeJour);
+}
+
+/////////////////////////////////////////////////////////////////////
 // Evènements ///////////////////////////////////////////////////////
 
-// gestion du menu
+// page de connexion
+document.getElementById("btnCnx").addEventListener("click", cnxUtilisateur, false);
+
+// menu
 document.getElementById("menu").addEventListener("click", changePage, false);
 
-// gestion du devis
+// devis
 document.getElementById("corpsDevis").addEventListener("click", gestionDevis, false);
+
+// affichage
+document.getElementById("parametres").addEventListener("click", panneauParametres, false);
+
+// à la fin du chargement du contenu
+window.onload = finChargementPage;
