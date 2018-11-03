@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Personnalisez la stratégie de sécurité de contenu dans la balise meta ci-dessous selon vos besoins. Ajoutez 'unsafe-inline' à default-src pour activer JavaScript directement dans les lignes.
+        Pour obtenir des détails, consultez http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <!--d'après https://www.grafikart.fr/forum/topics/19724'-->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="Content-Security-Policy" />
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <title>Application Madera</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="./style/arch.css" />
+    <link id="cssNuit" rel="stylesheet" type="text/css" media="screen" href="./style/nuit.css" />
+    <link id="cssJour" rel="stylesheet" type="text/css" media="screen" href="./style/jour.css" />
+</head>
+<body class="event received">
+
+    <div id="connexion">
+        <div>
+            <div id="logoConnexion">
+                <div></div>
+                <div>Madera</div>
+            </div>
+        </div>
+        <div>
+            <div id="formCnx">
+                <label for="idUtilisateur">Nom d'utilisateur :</label><input type="text" name="idUtilisateur" id="idUtilisateur">
+                <label for="mdpUtilisateur">Mot de passe:</label><input type="password" name="mdpUtilisateur" id="mdpUtilisateur">
+
+
+
+                <div id="btnCnx">
+                    <button id="validConnex">Valider</button>
+                    <button id="effacConnex">Effacer</button>
+                </div>
+            </div>
+        </div>
+
+        <span id="modeAffichage">
+            <img id="cnxModeNuit" src="./style/img/nuit.svg" alt="button mode nuit">
+            <img id="cnxModeJour" src="./style/img/jour.svg" alt="button mode jour">
+        </span>
+    </div>
+
+    <div id="estConnecte" class="masque">
+        <!-- MENU -->
+        <div id="menu">
+            <a class="btn btnActif" href="#" name="devis">
+                <img src="./style/img/devis.svg" alt="devis">
+            </a>
+            <a class="btn" href="#" name="conf">
+                <img src="./style/img/configuration.svg" alt="configuration">
+            </a>
+            <a class="btn" href="#" name="paiem">
+                <img src="./style/img/euro.svg" alt="paiement">
+            </a>
+            <div class="infosProjet">
+                <span>Devis du jj/mm/aaaa - projet "Villa Océane" (client Jean-Michel SARTRE)</span>
+            </div>
+            <a class="btn" href="#" name="parametres" id="btnParams">
+                <img src="./style/img/parametres.svg" alt="parametres">
+            </a>
+        </div>
+
+        <div id="page">
+            <div id="devis" class="active">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Gamme
+                            </th>
+                            <th>
+                                Modèle
+                            </th>
+                            <th>
+                                Coupe de principe
+                            </th>
+                            <th>
+                                Prix
+                            </th>
+                            <th>
+                                Opérations
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpsDevis">
+                        <tr id="saisieLignDevis">
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input type="text" pattern="[-+]?[0-9]*[.,]?[0-9]+">
+                            </td>
+                            <td>
+                                <button id="ajLign" class="btnAjLign">Ajouter</button>
+                                <!--
+                                    // solution du commentaire pour supprimer les espaces automatiques entre deux balises "inline"
+                                    // https://www.alsacreations.com/astuce/lire/1432-display-inline-block-espaces-indesirables.html
+                                -->
+                                <button id="validModif" class="btnValidLign masque"></button>
+                                <button id="annulModif" class="btnSuppLign masque"></button>
+                            </td>
+                        </tr>
+
+                        <tr id="modele">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr id="devL_1">
+                            <td>Bois</td>
+                            <td>Mur 1</td>
+                            <td>A</td>
+                            <td>1 250</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr id="devL_2">
+                            <td>Bois</td>
+                            <td>Mur 2</td>
+                            <td>A</td>
+                            <td>1 500</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr id="devL_3">
+                            <td>Bois</td>
+                            <td>Mur porte-fenêtre</td>
+                            <td>C</td>
+                            <td>4 000</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+
+                        <tr id="devL_4">
+                            <td>Bois</td>
+                            <td>Mur intérieur 1</td>
+                            <td>A</td>
+                            <td>1 250</td>
+                            <td>
+                                <button class="btnModLign"></button>
+                                <button class="btnSuppLign"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="conf">
+                <img src="./style/img/pages/configGamme.svg" alt="page de configuration des gammes">
+            </div>
+            <div id="paiem">
+                <img src="./style/img/pages/paiement.svg" alt="page des paiements">
+            </div>
+        </div>
+
+        <div id="piedDevis">
+            <div id="infosClient">
+                <div>Information client</div>
+            </div>
+            <div id="typeFinition">
+                <div>
+                    Finition :
+                    <select id="selectFin">
+                        <option value="1">Low-cost</option>
+                        <option value="2">Standard</option>
+                        <option value="3" selected>Premium</option>
+                    </select>
+                </div>
+            </div>
+            <div id="totaux">
+                <div id="ht-tva">
+                    <div>
+                        Total HT : <span id="totalHt">910</span> €
+                    </div>
+                    <div>
+                        TVA : <span id="totalTva">182</span> €
+                    </div>
+                </div>
+                <div id="ttc">
+                    <label>TOTAL</label> : <span id="totalTtc">1 092</span> €
+                </div>
+            </div>
+        </div>
+
+        <div id="parametres" class="masque">
+            <div>
+                <button id="btnPageJour"><img id="cnxModeJour" src="./style/img/jour.svg" alt="button mode jour"></button>
+                <button id="btnPageNuit" class="btnBase"><img id="cnxModeNuit" src="./style/img/nuit.svg" alt="button mode nuit"></button>
+            </div>
+            <button id="btnDeconnexion" class="btnBase"><img src="./style/img/sortie.svg" alt="button sortie gestion devis"></button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="./js/cordova.js"></script>
+    <script type="text/javascript" src="./js/platformOverrides.js"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+
+</body>
+</html>
