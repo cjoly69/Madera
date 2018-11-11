@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="io.cordova.myappc98719" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="fr-FR">
-  <name>ProjetMadera_Cordova</name>
-  <description>Projet vide qui utilise Apache Cordova pour vous aider à générer une application ciblant plusieurs plateformes mobiles : Android, iOS et la plateforme Windows universelle.</description>
-  <author href="http://cordova.io" email="dev@cordova.apache.org">Votre nom ici</author>
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="io.cordova.devisMadera" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="fr-FR">
+  <name>MADERA - Gestion de devis</name>
+  <description>Application prototype pour la gestion des devis de l'entreprise MADERA</description>
+  <author href="http://cordova.io" email="dev@cordova.apache.org">Khevin VERGER - Catherine JOLY - Johan KERDEKACHIAN</author>
   <vs:template-name>BlankJS</vs:template-name>
   <vs:toolsetVersion>6.3.1</vs:toolsetVersion>
-  <engine name="android" spec="5.2.1" />
-  <engine name="ios" spec="4.2.0" />
-  <engine name="windows" spec="4.4.2" />
+  <engine name="android" spec="~5.2.1" />
+  <engine name="ios" spec="~4.2.0" />
+  <engine name="windows" spec="~4.4.2" />
   <content src="index.html" />
   <access origin="*" />
   <preference name="SplashScreen" value="screen" />
@@ -34,10 +34,28 @@
     <allow-intent href="itms-apps:*" />
   </platform>
   <platform name="android">
+    <!--
     <icon src="res/icons/android/icon-36-ldpi.png" density="ldpi" />
     <icon src="res/icons/android/icon-48-mdpi.png" density="mdpi" />
     <icon src="res/icons/android/icon-72-hdpi.png" density="hdpi" />
     <icon src="res/icons/android/icon-96-xhdpi.png" density="xhdpi" />
+    -->
+    <!--
+        ldpi    : 36x36 px
+        mdpi    : 48x48 px
+        hdpi    : 72x72 px
+        xhdpi   : 96x96 px
+        xxhdpi  : 144x144 px
+        xxxhdpi : 192x192 px
+        
+      d'après https://cordova.apache.org/docs/en/latest/config_ref/images.html
+    -->
+    <icon src="res/icons/android/ldpi.png" density="ldpi" />
+    <icon src="res/icons/android/mdpi.png" density="mdpi" />
+    <icon src="res/icons/android/hdpi.png" density="hdpi" />
+    <icon src="res/icons/android/xhdpi.png" density="xhdpi" />
+    <icon src="res/icons/android/xxhdpi.png" density="xxhdpi" />
+    <icon src="res/icons/android/xxxhdpi.png" density="xxxhdpi" />
   </platform>
   <platform name="ios">
     <!-- iOS 8.0+ -->

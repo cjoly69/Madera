@@ -74,7 +74,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties project_1json__JSONSchema="http://www.asp.net/media/4878834/project.json" />
+      <UserProperties />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
@@ -83,6 +83,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="**\**" Exclude="**\platforms\**;**\bin\**;**\bld\**;**\node_modules\**;**\simulation\**;**\plugins\**;.gitignore;Prototype.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="www\js\plugins\cordova-sqlite-storage\www\SQLitePlugin.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="config.xml">

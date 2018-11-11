@@ -1,9 +1,10 @@
-html,
+html, 
 body,
 #estConnecte {
     height: 100%;
     padding: 0px;
     margin: 0px;
+    
     font-family: "Calibri";
     display: flex;
     flex-direction: column;
@@ -15,8 +16,9 @@ body,
 #connexion {
     display: flex;
     flex-direction: row;
+
     height: 50%;
-    width: 70%;
+    width: 50%;
     margin: auto;
 }
 
@@ -37,8 +39,6 @@ body,
 
 #connexion input {
     text-align: center;
-    height: 40px;
-    font-size: 20px;
 }
 
 #connexion > div > div {
@@ -59,12 +59,11 @@ body,
 }
 
 #formCnx button {
-    height: 50px;
+    height: 30px;
     border: 1px solid transparent;
-    font-size: 20px;
 }
 
-#formCnx button + button {
+#formCnx button+button {
     margin-top: 10px;
 }
 
@@ -80,33 +79,16 @@ body,
     min-width: 60px;
 }
 
-#formCnx input + #btnCnx {
-    margin-top: 40px;
-}
-
-#formCnx input + label {
-    margin-top: 10px;
-}
-
-#modeAffichage {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    height: 20px !important;
-}
-
-#modeAffichage > img {
-    width: 20px;
-}
-
 /* MENU */
 
 #menu {
     height: 5%;
-    min-height: 60px;
+    min-height: 40px;
+
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+
     align-items: center;
 }
 
@@ -119,25 +101,20 @@ body,
     color: black;
 }
 
-#menu > a img {
-    height: 70%;
-    margin: auto;
-}
-
 #menu > div > span,
 #menu > a > span {
     margin: auto;
 }
 
-#menu > div + div,
-#menu > a + div,
-#menu > a + a,
-#menu > div + a {
+#menu > div+div,
+#menu > a+div,
+#menu > a+a,
+#menu > div+a {
     border-left: black solid 1px;
 }
 
 .btn {
-    width: 60px;
+    width: 40px;
 }
 
 .infosProjet {
@@ -146,7 +123,7 @@ body,
 
 /* PAGE */
 
-#page::after {
+#page::after{
     content: "";
     background-repeat: no-repeat;
     background-position: center center;
@@ -157,7 +134,7 @@ body,
     bottom: 0;
     right: 0;
     position: absolute;
-    z-index: -1;
+    z-index: -1;  
     opacity: 0.10;
 }
 
@@ -180,8 +157,10 @@ body,
 #page > #paiem > img {
     margin: auto 10px;
     vertical-align: middle;
+    
     height: auto;
     max-height: 90vh;
+    
     width: calc(100% - 20px);
 }
 
@@ -198,27 +177,25 @@ body,
 }
 
 #devis table tbody tr {
-    height: 50px;
+    height: 30px;
 }
 
 #devis table tbody td {
-    height: 50px;
+    height: 30px;
     margin: 0px 20px;
     padding: 0px 20px;
 }
 
-/* https://www.ipgirl.com/1300/joker-en-css-pour-les-classes.html */
-#devis table tbody tr[id^='devL_'] > td:nth-of-type(4)::after {
-    content: " €"
-}
-
 #saisieLignDevis {
-    height: 70px !important;
+    height: 50px !important;
     opacity: 0.6;
 }
 
-#saisieLignDevis:active,
 #saisieLignDevis:hover {
+    opacity: 1;
+}
+
+#saisieLignDevis:active {
     opacity: 1;
 }
 
@@ -229,15 +206,10 @@ body,
 td > input,
 td > button {
     width: 90%;
-    padding: 6px 6px 6px 6px;
-    font: Bold 13px Arial;
-    border-radius: 2px;
-    border: none;
-    height: 70%;
-}
-
-td > button {
-    height: 100% !important;
+    padding:6px 6px 6px 6px;
+	font:Bold 13px Arial;
+	border-radius:2px;
+	border:none;
 }
 
 td > input {
@@ -247,14 +219,7 @@ td > input {
 
 #devis table td:last-of-type,
 #devis table th:last-of-type {
-    min-width: 150px;
-}
-
-.btnAjLign {
-    background-image: url("./img/ajouter.svg") !important;
-    background-size: 30% auto !important;
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
+    min-width: 80px;
 }
 
 .btnValidLign {
@@ -264,7 +229,7 @@ td > input {
 
 .btnModLign {
     background-image: url("./img/edition.svg") !important;
-    background-size: 30px auto !important;
+    background-size: 70% auto !important;
 }
 
 .btnSuppLign {
@@ -286,6 +251,7 @@ td > input {
     height: 0px !important;
     width: 0px !important;
     min-width: 0px !important;
+    
     margin: 0px !important;
     padding: 0px !important;
     display: none !important;
@@ -295,30 +261,31 @@ td > input {
 
 #piedDevis {
     height: 5%;
-    min-height: 60px;
+    min-height: 40px;
+    
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    
     position: absolute;
     bottom: 0px;
     left: 0px;
     right: 0px;
+    
     align-items: center;
-    font-size: 20px;
 }
 
 #piedDevis > div {
     height: 100%;
     display: flex;
-    padding: 0px 5px
 }
 
 #piedDevis > div > div {
     margin: auto 0px;
 }
 
-#piedDevis > div + div {
-    border-left: black solid 1px;
+#piedDevis > div+div {
+    border-left : black solid 1px;
 }
 
 
@@ -327,6 +294,7 @@ td > input {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    
     flex: 1;
 }
 
@@ -349,17 +317,18 @@ td > input {
 
 #parametres {
     z-index: 1;
-    width: 120px;
-    margin-left: calc(100% - 120px - 1px);
+    width: 150px;
+    margin-left: calc(100% - 150px - 1px);
     display: flex;
     flex-direction: column;
+    
     position: relative;
     border-bottom: 1px solid black;
     border-left: 1px solid black;
 }
 
 #parametres button {
-    height: 50px;
+    height: 30px;
     width: 100%;
     border: 0px;
 }
@@ -371,10 +340,6 @@ td > input {
 
 #parametres > div > button {
     width: 50%;
-}
-
-#parametres button > img {
-    height: 30px;
 }
 
 .btnBase {

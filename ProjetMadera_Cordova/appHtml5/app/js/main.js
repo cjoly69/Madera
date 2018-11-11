@@ -12,10 +12,6 @@ var estModeJour = true;
 
 var estConnecte = false;
 
-var txTva = 0.2;
-
-var patternDigit = /[-+]?[0-9]*[.,]?[0-9]+/g;
-
 function finChargementPage() {
     // on regarde si un jeton de connexion est disponible
     jetonTest = localStorage.getItem("jetonCnx");
@@ -30,12 +26,7 @@ function finChargementPage() {
     }
     else {
         // https://stackoverflow.com/a/264037
-        if (localStorage.getItem("estModeJour") == 'true') {
-            estModeJour = true;
-        }
-        else {
-            estModeJour = false;
-        }
+        estModeJour = (localStorage.getItem("estModeJour") == true);
     }
     activationModeAff();
 
@@ -54,7 +45,7 @@ function finChargementPage() {
 function cnxUtilisateur(event) {
     var nomBtn = event.srcElement.id;
 
-    switch (nomBtn) {
+    switch(nomBtn) {
         case "validConnex":
             gestionConnexion();
             break;
@@ -100,22 +91,6 @@ function gestionConnexion() {
     }
 }
 
-function cnxModeAffichage(event) {
-    var nomBtn = event.srcElement.id;
-
-    switch (nomBtn) {
-        case "cnxModeJour":
-            estModeJour = true;
-            activationModeAff();
-            break;
-
-        case "cnxModeNuit":
-            estModeJour = false;
-            activationModeAff();
-            break;
-    }
-}
-
 /////////////////////////////////////////////////////////////////////
 // Menu /////////////////////////////////////////////////////////////
 
@@ -123,7 +98,7 @@ function changePage(event) {
     var nomPage = event.srcElement.name;
 
     // cas où on clique sur le contenu du lien
-    if (nomPage == undefined || nomPage == '') {
+    if (nomPage == undefined) {
         nomPage = event.srcElement.parentNode.name;
     }
 
@@ -157,7 +132,7 @@ function changePage(event) {
 // désactive le bouton
 function desactiveBtn(nomBtn) {
     var children = document.getElementById("menu").children;
-
+    
     for (var i = 0; i < children.length; i++) {
         var child = children[i];
 
@@ -171,7 +146,7 @@ function desactiveBtn(nomBtn) {
 // retire la classe "btnActif" de tous les boutons du menu
 function desactiveTsBtn() {
     var children = document.getElementById("menu").children;
-
+    
     for (var i = 0; i < children.length; i++) {
         var child = children[i];
 
@@ -242,23 +217,23 @@ function gestionDevis(event) {
             if (ligne.id != undefined && ligne.id != "") {
                 var nomFonct = event.srcElement.className;
 
-                switch (nomFonct) {
+                switch(nomFonct) {
                     case "btnModLign":
                         numLigneDevisModif = ligne.id.substring(nomLigneDevis.length); // on récupère l'id de la ligne
                         modificationLigneDevis(ligne);
                         break;
 
                     case "btnSuppLign":
-                        ligne.classList.add("confirmationSupp");
+                            ligne.classList.add("confirmationSupp");
 
-                        if (confirm("Voulez-vous vraiment supprimer cette ligne ?")) {
-                            suppressionLigneDevis(ligne);
-                        }
-                        else {
-                            ligne.classList.remove("confirmationSupp");
-                        }
+                            if (confirm("Voulez-vous vraiment supprimer cette ligne ?")) {
+                                suppressionLigneDevis(ligne);
+                            }
+                            else {
+                                ligne.classList.remove("confirmationSupp");
+                            }
                         break;
-
+                        
                 }
             }
         }
@@ -280,34 +255,9 @@ function ajoutLigneDevis() {
     // on applique les nouvelles propriétés 
     nvlleLigne.id = nomLigneDevis + nbLignesDevis;
 
-    var val = "";
-    var tabValeur = null;
-    var valeur = "";
-
-    for (var i = 0; i < ligneSaisie.cells.length; i++) {
+    for (var i = 0; i < ligneSaisie.cells.length; i++) {        
         if (ligneSaisie.cells[i].firstElementChild.type === "text") {
-            val = ligneSaisie.cells[i].firstElementChild.value;
-
-            if (i == 3) {
-                valeur = "";
-
-                tabValeur = val.match(patternDigit);
-                if (tabValeur != null) {
-                    /*
-                    tabValeur.forEach(element => {
-                        valeur += element;
-                    });
-                    */
-
-                    for (var j = 0; j < tabValeur.length; j++) {
-                        valeur += tabValeur[j];
-                    }
-
-                    val = getFormatMillier(valeur)
-                }
-            }
-
-            nvlleLigne.cells[i].innerText = val;
+            nvlleLigne.cells[i].innerText = ligneSaisie.cells[i].firstElementChild.value;
         }
     }
 
@@ -315,31 +265,24 @@ function ajoutLigneDevis() {
 
     var corpsDevis = document.getElementById("corpsDevis");
     corpsDevis.appendChild(nvlleLigne);
-
-    majFacturation();
 }
 
 // gestion de la suppression d'une ligne
 function suppressionLigneDevis(ligne) {
     ligne.remove();
-
-    majFacturation();
 }
 
 // permet à l'utilisateur de modifier une ligne de devis
 function modificationLigneDevis(ligne) {
     var ligneSaisie = document.getElementById("saisieLignDevis");
-
+    
     estEnModification = true;
 
-    modifBtnSaisieLigne(false);
-    /*
-    document.getElementById("ajLign").classList.add("masqueBtn masque");
-    document.getElementById("validModif").classList.remove("masqueBtn masque");
-    document.getElementById("annulModif").classList.remove("masqueBtn masque");
-    */
+    document.getElementById("ajLign").classList.add("masqueBtn");
+    document.getElementById("validModif").classList.remove("masqueBtn");
+    document.getElementById("annulModif").classList.remove("masqueBtn");
 
-    for (var i = 0; i < ligneSaisie.cells.length; i++) {
+    for (var i = 0; i < ligneSaisie.cells.length; i++) {        
         if (ligneSaisie.cells[i].firstElementChild.type === "text") {
             ligneSaisie.cells[i].firstElementChild.value = ligne.cells[i].innerText;
         }
@@ -352,45 +295,19 @@ function majLigneDevis() {
         var ligneSaisie = document.getElementById("saisieLignDevis");
         var ligne = document.getElementById(nomLigneDevis + numLigneDevisModif);
 
-        for (var i = 0; i < ligneSaisie.cells.length; i++) {
+        for (var i = 0; i < ligneSaisie.cells.length; i++) {        
             if (ligneSaisie.cells[i].firstElementChild.type === "text") {
-                val = ligneSaisie.cells[i].firstElementChild.value;
-
-                if (i == 3) {
-                    valeur = "";
-
-                    tabValeur = val.match(patternDigit);
-                    if (tabValeur != null) {
-                        /*
-                        tabValeur.forEach(element => {
-                            valeur += element;
-                        });
-                        */
-
-                        for (var j = 0; j < tabValeur.length; j++) {
-                            valeur += tabValeur[j];
-                        }
-
-                        val = getFormatMillier(valeur)
-                    }
-                }
-
-                ligne.cells[i].innerText = val;
+                ligne.cells[i].innerText = ligneSaisie.cells[i].firstElementChild.value;
                 ligneSaisie.cells[i].firstElementChild.value = "";
             }
         }
 
-        modifBtnSaisieLigne(true);
-        /*
-        document.getElementById("ajLign").classList.remove("masqueBtn masque");
-        document.getElementById("validModif").classList.add("masqueBtn masque");
-        document.getElementById("annulModif").classList.add("masqueBtn masque");
-        */
+        document.getElementById("ajLign").classList.remove("masqueBtn");
+        document.getElementById("validModif").classList.add("masqueBtn");
+        document.getElementById("annulModif").classList.add("masqueBtn");
 
         estEnModification = false;
         numLigneDevisModif = -1;
-
-        majFacturation();
     }
 }
 
@@ -398,94 +315,18 @@ function majLigneDevis() {
 function nettoyageSaisieLigne() {
     var ligneSaisie = document.getElementById("saisieLignDevis");
 
-    for (var i = 0; i < ligneSaisie.cells.length; i++) {
+    for (var i = 0; i < ligneSaisie.cells.length; i++) {        
         if (ligneSaisie.cells[i].firstElementChild.type === "text") {
             ligneSaisie.cells[i].firstElementChild.value = "";
         }
     }
 
-    modifBtnSaisieLigne(true);
-
-    /*
-    document.getElementById("ajLign").classList.remove("masqueBtn masque");
-    document.getElementById("validModif").classList.add("masqueBtn masque");
-    document.getElementById("annulModif").classList.add("masqueBtn masque");
-    */
+    document.getElementById("ajLign").classList.remove("masqueBtn");
+    document.getElementById("validModif").classList.add("masqueBtn");
+    document.getElementById("annulModif").classList.add("masqueBtn");
 
     estEnModification = false;
     numLigneDevisModif = -1;
-}
-
-// effectue les opérations affichant ou non les boutons [validation / annulation]
-function modifBtnSaisieLigne(aMasquer) {
-    if (aMasquer) {
-        document.getElementById("ajLign").classList.remove("masqueBtn");
-        document.getElementById("ajLign").classList.remove("masque");
-
-        document.getElementById("validModif").classList.add("masqueBtn");
-        document.getElementById("validModif").classList.add("masque");
-
-        document.getElementById("annulModif").classList.add("masqueBtn");
-        document.getElementById("annulModif").classList.add("masque");
-    }
-    else {
-        document.getElementById("ajLign").classList.add("masqueBtn");
-        document.getElementById("ajLign").classList.add("masque");
-
-        document.getElementById("validModif").classList.remove("masqueBtn");
-        document.getElementById("validModif").classList.remove("masque");
-
-        document.getElementById("annulModif").classList.remove("masqueBtn");
-        document.getElementById("annulModif").classList.remove("masque");
-    }
-}
-
-function getFormatMillier(montant) {
-    return String(montant).replace(/(.)(?=(\d{3})+$)/g, '$1 ')
-}
-
-function majFacturation() {
-    var ttc = 0;
-
-    // formatage des valeurs
-    var montant = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' })
-
-    // récupère uniquement les chiffres dans les chaines
-    //var pattern = /[-]{0,1}[\d]*[\.]{0,1}[\d]+/g;
-    var resReg = null;
-
-    // nb de lignes dans le tableau
-    var lenTab = document.getElementById("corpsDevis").children.length;
-    var tabValeur = null;
-    var valeur = '';
-
-    // on parcourt chaque ligne pour obtenir le ttc
-    for (var i = 0; i < lenTab; i++) {
-        formTr = document.getElementById("corpsDevis").children[i];
-
-        if (formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis) {
-            valeur = "";
-
-            // on remplace tout ce qui n'est pas numérique par rien
-            tabValeur = formTr.children[3].innerText.match(patternDigit);
-            /*
-            tabValeur.forEach(element => {
-                valeur += element;
-            });
-            */
-
-            for (var j = 0; j < tabValeur.length; j++) {
-                valeur += tabValeur[j];
-            }
-
-            ttc += Number(valeur.replace(",", "."));
-        }
-    }
-
-    // https://www.toutjavascript.com/reference/ref-math.round.php
-    document.getElementById("totalTtc").innerText = getFormatMillier((Math.round(ttc) * 100) / 100);
-    document.getElementById("totalHt").innerText = getFormatMillier((Math.round(ttc * (1 - txTva)) * 100) / 100);
-    document.getElementById("totalTva").innerText = getFormatMillier((Math.round(ttc * txTva) * 100) / 100);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -493,20 +334,13 @@ function majFacturation() {
 
 function panneauParametres(event) {
     var nomBtn = event.srcElement.id;
-
-    // cas où on clique sur le contenu du lien
-    if (nomBtn == undefined || nomBtn == '') {
-        nomBtn = event.srcElement.parentNode.id;
-    }
-
-    switch (nomBtn) {
-        case "cnxModeJour":
+    
+    switch(nomBtn) {
         case "btnPageJour":
             estModeJour = true;
             activationModeAff();
             break;
 
-        case "cnxModeNuit":
         case "btnPageNuit":
             estModeJour = false;
             activationModeAff();
@@ -523,16 +357,10 @@ function activationModeAff() {
     if (estModeJour) {
         document.getElementById("btnPageJour").classList.remove("btnBase");
         document.getElementById("btnPageNuit").classList.add("btnBase");
-
-        document.getElementById("cnxModeNuit").classList.remove("masque");
-        document.getElementById("cnxModeJour").classList.add("masque");
     }
     else {
         document.getElementById("btnPageNuit").classList.remove("btnBase");
         document.getElementById("btnPageJour").classList.add("btnBase");
-
-        document.getElementById("cnxModeJour").classList.remove("masque");
-        document.getElementById("cnxModeNuit").classList.add("masque");
     }
 
     document.getElementById("cssJour").disabled = !estModeJour;
@@ -546,7 +374,6 @@ function activationModeAff() {
 
 // page de connexion
 document.getElementById("btnCnx").addEventListener("click", cnxUtilisateur, false);
-document.getElementById("modeAffichage").addEventListener("click", cnxModeAffichage, false);
 
 // menu
 document.getElementById("menu").addEventListener("click", changePage, false);

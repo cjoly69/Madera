@@ -4,7 +4,7 @@
     marron : #6e6356
 */
 
-#connexion > div + div {
+#connexion > div+div {
     border-left: 1px solid #909090;
 }
 
@@ -27,18 +27,17 @@
     background-color: #8dc63f;
 }
 
-    #menu .btnActif {
-        background-color: #056839;
-        color: white;
-    }
+#menu .btnActif {
+    background-color: #056839;
+    color: white;
+}
 
-#page::after {
+#page::after{
     background-image: url("./img/logoMadera.svg");
 }
 
 #piedDevis {
     background-color: #6e6356;
-    color: white;
 }
 
 #saisieLignDevis {
@@ -46,8 +45,8 @@
 }
 
 .btnAjLign {
-    background: #3ad336;
-    color: #fff;
+	background:#3ad336;
+	color:#fff;
 }
 
 .btnValidLign {
@@ -56,19 +55,25 @@
 }
 
 .btnModLign {
-    background: #d38f36;
-    color: #fff;
+    background:#d38f36;
+	color:#fff;
 }
 
 .btnSuppLign {
-    background: #d34836;
-    color: #fff;
+    background:#d34836;
+	color:#fff;
 }
 
 .confirmationSupp {
-    background: repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
+    background: repeating-linear-gradient( 
+        45deg, 
+        #fff0, 
+        #fff 10px, 
+        #f003 10px, 
+        #f003 20px
+    );
 }
 
-#devis > table > tbody > tr:nth-of-type(even) {
-    background-color: rgba(0, 0, 0, 0.07);
+#devis > table > tbody > tr:nth-of-type(even)  {
+    background-color: #efefef;
 }

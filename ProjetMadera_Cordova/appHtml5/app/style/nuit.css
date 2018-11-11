@@ -10,9 +10,9 @@ tr {
     color: white;
 }
 
-    #connexion > div + div {
-        border-left: 1px solid #909090;
-    }
+#connexion > div+div {
+    border-left: 1px solid #909090;
+}
 
 #logoConnexion > div:nth-of-type(1),
 #page::after {
@@ -34,10 +34,10 @@ tr {
     background-color: #eaeaea;
 }
 
-    #menu .btnActif {
-        background-color: #686868;
-        color: white;
-    }
+#menu .btnActif {
+    background-color: #686868;
+    color: white;
+}
 
 #piedDevis {
     background-color: #696969;
@@ -48,8 +48,8 @@ tr {
 }
 
 .btnAjLign {
-    background: #3ad336;
-    color: #fff;
+	background:#3ad336;
+	color:#fff;
 }
 
 .btnValidLign {
@@ -58,20 +58,26 @@ tr {
 }
 
 .btnModLign {
-    background: #d38f36;
-    color: #fff;
+    background:#d38f36;
+	color:#fff;
 }
 
 .btnSuppLign {
-    background: #d34836;
-    color: #fff;
+    background:#d34836;
+	color:#fff;
 }
 
 .confirmationSupp {
-    background: repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
+    background: repeating-linear-gradient( 
+        45deg, 
+        #fff0, 
+        #fff 10px, 
+        #f003 10px, 
+        #f003 20px
+    );
 }
 
-#devis > table > tbody > tr:nth-of-type(even) {
-    background-color: rgba(255, 255, 255, 0.18);
-    color: white;
+#devis > table > tbody > tr:nth-of-type(even)  {
+    background-color: #efefef;
+    color: black;
 }
