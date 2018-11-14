@@ -10,9 +10,9 @@ tr {
     color: white;
 }
 
-    #connexion > div + div {
-        border-left: 1px solid #909090;
-    }
+#connexion > div + div {
+    border-left: 1px solid #909090;
+}
 
 #logoConnexion > div:nth-of-type(1),
 #page::after {
@@ -34,10 +34,10 @@ tr {
     background-color: #eaeaea;
 }
 
-    #menu .btnActif {
-        background-color: #686868;
-        color: white;
-    }
+#menu .btnActif {
+    background-color: #686868;
+    color: white;
+}
 
 #piedDevis {
     background-color: #696969;

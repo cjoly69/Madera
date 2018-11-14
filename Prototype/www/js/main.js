@@ -84,7 +84,7 @@ function gestionConnexion() {
         localStorage.setItem("jetonCnx", jeton);
     }
 
-    var formCnx = document.getElementById("connexion");
+    var formCnx = document.getElementById("bodyConnexion");
     var accesPages = document.getElementById("estConnecte");
 
     if (estConnecte) {
