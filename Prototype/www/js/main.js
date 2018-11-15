@@ -285,7 +285,10 @@ function ajoutLigneDevis() {
     var valeur = "";
 
     for (var i = 0; i < ligneSaisie.cells.length; i++) {
-        if (ligneSaisie.cells[i].firstElementChild.type === "text") {
+        if (
+            ligneSaisie.cells[i].firstElementChild.type === "text" ||
+            ligneSaisie.cells[i].firstElementChild.type === "number"
+        ) {
             val = ligneSaisie.cells[i].firstElementChild.value;
 
             if (i == 3) {
