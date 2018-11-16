@@ -99,9 +99,12 @@ hr {
 */
 
 .confirmationSupp {
+    background-color: rgba(255, 0, 0, 0.18) !important;
+    /*
     background: -webkit-repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
     background: -o-repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
     background: repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
+    */
 }
 
 #devis > table > tbody > tr:nth-of-type(even) {

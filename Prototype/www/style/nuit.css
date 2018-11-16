@@ -81,9 +81,12 @@ tr {
 */
 
 .confirmationSupp {
+    background-color: rgba(255, 0, 0, 0.62) !important;
+    /*
     background: -webkit-repeating-linear-gradient( 45deg, #fff0, #dedede3d 10px, #00000000 10px, #f000 20px );
     background: -o-repeating-linear-gradient( 45deg, #fff0, #dedede3d 10px, #00000000 10px, #f000 20px );
     background: repeating-linear-gradient( 45deg, #fff0, #dedede3d 10px, #00000000 10px, #f000 20px );
+    */
 }
 
 #devis > table > tbody > tr:nth-of-type(even) {

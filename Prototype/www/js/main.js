@@ -370,7 +370,28 @@ function modificationLigneDevis(ligne) {
             ligneSaisie.cells[i].firstElementChild.type === "text" ||
             ligneSaisie.cells[i].firstElementChild.type === "number"
         ) {
-            ligneSaisie.cells[i].firstElementChild.value = ligne.cells[i].innerText;
+            val = ligne.cells[i].innerText;
+
+            if (i == 3) {
+                valeur = "";
+
+                tabValeur = val.match(patternDigit);
+                if (tabValeur != null) {
+                    /*
+                    tabValeur.forEach(element => {
+                        valeur += element;
+                    });
+                    */
+
+                    for (var j = 0; j < tabValeur.length; j++) {
+                        valeur += tabValeur[j];
+                    }
+
+                    val = valeur;
+                }
+            }
+
+            ligneSaisie.cells[i].firstElementChild.value = val;
         }
     }
 }
