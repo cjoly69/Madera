@@ -1,3 +1,8 @@
+hr {
+    border: 1px solid white;
+    width: 100%
+}
+
 body {
     background-color: black;
 }
@@ -19,11 +24,13 @@ tr {
     background-image: url("./img/logoMaderaBlanc.svg");
 }
 
+#validerChoixDevis,
 #validConnex {
     background-color: #ffffffb3;
     color: black;
 }
 
+#fermerChoixDevis,
 #effacConnex {
     border: 1px solid white !important;
     background-color: #fff3;
@@ -67,11 +74,28 @@ tr {
     color: #fff;
 }
 
+/*
 .confirmationSupp {
     background: repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
+}
+*/
+
+.confirmationSupp {
+    background: -webkit-repeating-linear-gradient( 45deg, #fff0, #dedede3d 10px, #00000000 10px, #f000 20px );
+    background: -o-repeating-linear-gradient( 45deg, #fff0, #dedede3d 10px, #00000000 10px, #f000 20px );
+    background: repeating-linear-gradient( 45deg, #fff0, #dedede3d 10px, #00000000 10px, #f000 20px );
 }
 
 #devis > table > tbody > tr:nth-of-type(even) {
     background-color: rgba(255, 255, 255, 0.18);
     color: white;
+}
+
+#selectionDevis {
+    background-color: #666666;
+}
+
+#telechDevis,
+#envoyerDevis {
+    background-color: #e3e3e3;
 }

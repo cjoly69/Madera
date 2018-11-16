@@ -1,5 +1,6 @@
 html,
 body,
+body > div,
 #estConnecte,
 #bodyConnexion {
     height: 100%;
@@ -389,4 +390,124 @@ td > input {
 
 #btnPageNuit {
     box-shadow: inset 2px -2px 3px #aaa;
+}
+
+/* GESTION DU DEVIS */
+
+#bodySelDevis {
+    position: absolute;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.78);
+    z-index: 9;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+}
+
+#selectionDevis {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 20px;
+    border: 5px solid gray;
+}
+
+#selectionDevis > div {
+    display: flex;
+}
+
+#selectionDevis > div > button {
+    margin: 10px auto 0px auto;
+    width: 40%;
+    height: 40px;
+    border: transparent;
+    font-size: 20px;
+}
+
+#selectionDevis hr {
+    margin: 20px auto 10px auto !important;
+}
+
+#selectionDevis h3 {
+    margin: 0px;
+    text-align: center;
+}
+
+/* écran d'attente */
+
+#cordovaAttente {
+    color: gray;
+    display: flex;
+}
+
+#cordovaAttente div {
+    margin: auto;
+}
+
+@keyframes lds-ripple {
+    0% {
+        top: 90px;
+        left: 90px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        top: 15px;
+        left: 15px;
+        width: 150px;
+        height: 150px;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes lds-ripple {
+    0% {
+        top: 90px;
+        left: 90px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        top: 15px;
+        left: 15px;
+        width: 150px;
+        height: 150px;
+        opacity: 0;
+    }
+}
+
+.lds-ripple {
+    position: relative;
+}
+
+.lds-ripple div {
+    box-sizing: content-box;
+    position: absolute;
+    border-width: 10px;
+    border-style: solid;
+    opacity: 1;
+    border-radius: 50%;
+    -webkit-animation: lds-ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    animation: lds-ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.lds-ripple div:nth-child(1) {
+    border-color: #056839;
+}
+
+.lds-ripple div:nth-child(2) {
+    border-color: #8dc63f;
+    -webkit-animation-delay: -0.75s;
+    animation-delay: -0.75s;
+}
+
+.lds-ripple {
+    width: 200px !important;
+    height: 200px !important;
+    -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+    transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
 }

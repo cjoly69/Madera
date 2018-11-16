@@ -4,6 +4,11 @@
     marron : #6e6356
 */
 
+hr {
+    border: 1px solid black;
+    width: 100%
+}
+
 #bodyConnexion {
     background-image: url("./img/beautiful-home-1680790_creativeCommons0.jpg");
     background-position: bottom center;
@@ -32,11 +37,13 @@
     background-image: url("./img/logoMadera.svg");
 }
 
+#validerChoixDevis,
 #validConnex {
     background-color: green;
     color: white;
 }
 
+#fermerChoixDevis,
 #effacConnex {
     border: 1px solid red !important;
     background-color: white;
@@ -85,10 +92,27 @@
     color: #fff;
 }
 
+/*
 .confirmationSupp {
+    background: repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
+}
+*/
+
+.confirmationSupp {
+    background: -webkit-repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
+    background: -o-repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
     background: repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
 }
 
 #devis > table > tbody > tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, 0.07);
+}
+
+#selectionDevis {
+    background-color: white;
+}
+
+#telechDevis,
+#envoyerDevis {
+    background-color: #e3e3e3;
 }

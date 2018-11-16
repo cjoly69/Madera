@@ -131,5 +131,5 @@
   <preference name="BackupWebStorage" value="local" />
   <preference name="target-device" value="universal" />
   <plugin name="cordova-sqlite-storage" spec="~2.4.0" />
-  <preference name="Fullscreen" value="True" />
+  <preference name="Fullscreen" value="False" />
 </widget>

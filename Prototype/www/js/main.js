@@ -12,6 +12,9 @@ var estModeJour = true;
 
 var estConnecte = false;
 
+var typeStatusConnexion = Object.freeze({ "enDeconnexion": 1, "enConnexion": 2, null:3 })
+var statusCnx = typeStatusConnexion.null;
+
 var txTva = 0.2;
 
 var patternDigit = /[-+]?[0-9]*[.,]?[0-9]+/g;
@@ -46,6 +49,9 @@ function finChargementPage() {
         document.getElementById("idUtilisateur").value = idUtilisateur;
         document.getElementById("mdpUtilisateur").value = mdpUtilisateur;
     }
+    
+    document.getElementById("cordovaAttente").classList.add("masque");
+    document.getElementById("cordovaCharge").classList.remove("masque");
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -56,7 +62,9 @@ function cnxUtilisateur(event) {
 
     switch (nomBtn) {
         case "validConnex":
+            statusCnx = typeStatusConnexion.enConnexion;
             gestionConnexion();
+            statusCnx = typeStatusConnexion.null;
             break;
         case "effacConnex":
             document.getElementById("idUtilisateur").value = "";
@@ -66,22 +74,30 @@ function cnxUtilisateur(event) {
 }
 
 function decnxUtilisateur() {
+    statusCnx = typeStatusConnexion.enDeconnexion;
     localStorage.removeItem("jetonCnx");
     estConnecte = false;
     gestionConnexion();
+    statusCnx = typeStatusConnexion.null;
 }
 
 function gestionConnexion() {
     var idUt = document.getElementById("idUtilisateur").value;
     var mdp = document.getElementById("mdpUtilisateur").value;
 
-    if (
-        idUt == idUtilisateur &&
-        mdpUtilisateur == mdp &&
-        !estConnecte
-    ) {
-        estConnecte = true;
-        localStorage.setItem("jetonCnx", jeton);
+    if (!estConnecte) {
+        if (
+            idUt == idUtilisateur &&
+            mdpUtilisateur == mdp
+        ) {
+            estConnecte = true;
+            localStorage.setItem("jetonCnx", jeton);
+        }
+        else {
+            if (statusCnx == typeStatusConnexion.enConnexion) {
+                alert("Identifiants de connexions incorrects.")
+            }
+        }
     }
 
     var formCnx = document.getElementById("bodyConnexion");
@@ -250,15 +266,17 @@ function gestionDevis(event) {
 
                     case "btnSuppLign":
                         ligne.classList.add("confirmationSupp");
-
-                        if (confirm("Voulez-vous vraiment supprimer cette ligne ?")) {
-                            suppressionLigneDevis(ligne);
-                        }
-                        else {
-                            ligne.classList.remove("confirmationSupp");
-                        }
+                        
+                        setTimeout(function () {
+                            if (confirm("Voulez-vous vraiment supprimer cette ligne ?")) {
+                                suppressionLigneDevis(ligne);
+                            }
+                            else {
+                                ligne.classList.remove("confirmationSupp");
+                            }
+                        }, 50);
                         break;
-
+                        
                 }
             }
         }
@@ -270,56 +288,61 @@ function gestionDevis(event) {
 
 // ajoute une ligne au devis
 function ajoutLigneDevis() {
-    nbLignesDevis++;
+    if (controleSaisie()) {
+        nbLignesDevis++;
 
-    var ligneSaisie = document.getElementById("saisieLignDevis");
+        var ligneSaisie = document.getElementById("saisieLignDevis");
 
-    // on copie le modèle d'une ligne du devis
-    var nvlleLigne = document.getElementById("modele").cloneNode(true);
+        // on copie le modèle d'une ligne du devis
+        var nvlleLigne = document.getElementById("modele").cloneNode(true);
 
-    // on applique les nouvelles propriétés 
-    nvlleLigne.id = nomLigneDevis + nbLignesDevis;
+        // on applique les nouvelles propriétés 
+        nvlleLigne.id = nomLigneDevis + nbLignesDevis;
 
-    var val = "";
-    var tabValeur = null;
-    var valeur = "";
+        var val = "";
+        var tabValeur = null;
+        var valeur = "";
 
-    for (var i = 0; i < ligneSaisie.cells.length; i++) {
-        if (
-            ligneSaisie.cells[i].firstElementChild.type === "text" ||
-            ligneSaisie.cells[i].firstElementChild.type === "number"
-        ) {
-            val = ligneSaisie.cells[i].firstElementChild.value;
+        for (var i = 0; i < ligneSaisie.cells.length; i++) {
+            if (
+                ligneSaisie.cells[i].firstElementChild.type === "text" ||
+                ligneSaisie.cells[i].firstElementChild.type === "number"
+            ) {
+                val = ligneSaisie.cells[i].firstElementChild.value;
 
-            if (i == 3) {
-                valeur = "";
+                if (i == 3) {
+                    valeur = "";
 
-                tabValeur = val.match(patternDigit);
-                if (tabValeur != null) {
-                    /*
-                    tabValeur.forEach(element => {
-                        valeur += element;
-                    });
-                    */
+                    tabValeur = val.match(patternDigit);
+                    if (tabValeur != null) {
+                        /*
+                        tabValeur.forEach(element => {
+                            valeur += element;
+                        });
+                        */
 
-                    for (var j = 0; j < tabValeur.length; j++) {
-                        valeur += tabValeur[j];
+                        for (var j = 0; j < tabValeur.length; j++) {
+                            valeur += tabValeur[j];
+                        }
+
+                        val = getFormatMillier(valeur)
                     }
-
-                    val = getFormatMillier(valeur)
                 }
+
+                nvlleLigne.cells[i].innerText = val;
             }
-
-            nvlleLigne.cells[i].innerText = val;
         }
+
+        nettoyageSaisieLigne();
+
+        var corpsDevis = document.getElementById("corpsDevis");
+        corpsDevis.appendChild(nvlleLigne);
+
+        majFacturation();
     }
-
-    nettoyageSaisieLigne();
-
-    var corpsDevis = document.getElementById("corpsDevis");
-    corpsDevis.appendChild(nvlleLigne);
-
-    majFacturation();
+    else {
+        alert("Tous les champs sont obligatoires.");
+    }
 }
 
 // gestion de la suppression d'une ligne
@@ -343,7 +366,10 @@ function modificationLigneDevis(ligne) {
     */
 
     for (var i = 0; i < ligneSaisie.cells.length; i++) {
-        if (ligneSaisie.cells[i].firstElementChild.type === "text") {
+        if (
+            ligneSaisie.cells[i].firstElementChild.type === "text" ||
+            ligneSaisie.cells[i].firstElementChild.type === "number"
+        ) {
             ligneSaisie.cells[i].firstElementChild.value = ligne.cells[i].innerText;
         }
     }
@@ -352,48 +378,57 @@ function modificationLigneDevis(ligne) {
 // mise à jour de la ligne de devis
 function majLigneDevis() {
     if (numLigneDevisModif != -1) {
-        var ligneSaisie = document.getElementById("saisieLignDevis");
-        var ligne = document.getElementById(nomLigneDevis + numLigneDevisModif);
 
-        for (var i = 0; i < ligneSaisie.cells.length; i++) {
-            if (ligneSaisie.cells[i].firstElementChild.type === "text") {
-                val = ligneSaisie.cells[i].firstElementChild.value;
+        if (controleSaisie()) {
+            var ligneSaisie = document.getElementById("saisieLignDevis");
+            var ligne = document.getElementById(nomLigneDevis + numLigneDevisModif);
 
-                if (i == 3) {
-                    valeur = "";
+            for (var i = 0; i < ligneSaisie.cells.length; i++) {
+                if (
+                    ligneSaisie.cells[i].firstElementChild.type === "text" ||
+                    ligneSaisie.cells[i].firstElementChild.type === "number"
+                ) {
+                    val = ligneSaisie.cells[i].firstElementChild.value;
 
-                    tabValeur = val.match(patternDigit);
-                    if (tabValeur != null) {
-                        /*
-                        tabValeur.forEach(element => {
-                            valeur += element;
-                        });
-                        */
+                    if (i == 3) {
+                        valeur = "";
 
-                        for (var j = 0; j < tabValeur.length; j++) {
-                            valeur += tabValeur[j];
+                        tabValeur = val.match(patternDigit);
+                        if (tabValeur != null) {
+                            /*
+                            tabValeur.forEach(element => {
+                                valeur += element;
+                            });
+                            */
+
+                            for (var j = 0; j < tabValeur.length; j++) {
+                                valeur += tabValeur[j];
+                            }
+
+                            val = getFormatMillier(valeur)
                         }
-
-                        val = getFormatMillier(valeur)
                     }
+
+                    ligne.cells[i].innerText = val;
+                    ligneSaisie.cells[i].firstElementChild.value = "";
                 }
-
-                ligne.cells[i].innerText = val;
-                ligneSaisie.cells[i].firstElementChild.value = "";
             }
+
+            modifBtnSaisieLigne(true);
+            /*
+            document.getElementById("ajLign").classList.remove("masqueBtn masque");
+            document.getElementById("validModif").classList.add("masqueBtn masque");
+            document.getElementById("annulModif").classList.add("masqueBtn masque");
+            */
+
+            estEnModification = false;
+            numLigneDevisModif = -1;
+
+            majFacturation();
         }
-
-        modifBtnSaisieLigne(true);
-        /*
-        document.getElementById("ajLign").classList.remove("masqueBtn masque");
-        document.getElementById("validModif").classList.add("masqueBtn masque");
-        document.getElementById("annulModif").classList.add("masqueBtn masque");
-        */
-
-        estEnModification = false;
-        numLigneDevisModif = -1;
-
-        majFacturation();
+        else {
+            alert("Tous les champs sont obligatoires.");
+        }
     }
 }
 
@@ -402,7 +437,10 @@ function nettoyageSaisieLigne() {
     var ligneSaisie = document.getElementById("saisieLignDevis");
 
     for (var i = 0; i < ligneSaisie.cells.length; i++) {
-        if (ligneSaisie.cells[i].firstElementChild.type === "text") {
+        if (
+            ligneSaisie.cells[i].firstElementChild.type === "text" ||
+            ligneSaisie.cells[i].firstElementChild.type === "number"
+        ) {
             ligneSaisie.cells[i].firstElementChild.value = "";
         }
     }
@@ -441,6 +479,26 @@ function modifBtnSaisieLigne(aMasquer) {
         document.getElementById("annulModif").classList.remove("masqueBtn");
         document.getElementById("annulModif").classList.remove("masque");
     }
+}
+
+function controleSaisie() {
+    var r = true;
+
+    var ligneSaisie = document.getElementById("saisieLignDevis");
+
+    for (var i = 0; i < ligneSaisie.cells.length; i++) {
+        if (
+            ligneSaisie.cells[i].firstElementChild.type === "text" ||
+            ligneSaisie.cells[i].firstElementChild.type === "number"
+        ) {
+            if (ligneSaisie.cells[i].firstElementChild.value.trim().length == 0) {
+                r = false;
+                break;
+            }
+        }
+    }
+
+    return r;
 }
 
 function getFormatMillier(montant) {
@@ -515,6 +573,10 @@ function panneauParametres(event) {
             activationModeAff();
             break;
 
+        case "btnChangeDevis":
+            affichageGestionDevis(true);
+            break;
+
         case "btnDeconnexion":
             decnxUtilisateur();
             break;
@@ -544,6 +606,30 @@ function activationModeAff() {
     localStorage.setItem("estModeJour", estModeJour);
 }
 
+function affichageGestionDevis(afficher) {
+    var form = document.getElementById("bodySelDevis")
+
+    if (afficher) {
+        form.classList.remove("masque");
+    }
+    else {
+        form.classList.add("masque");
+    }
+}
+
+function panneauGestionDevis(event) {
+    var nomBtn = event.srcElement.id;
+
+    switch (nomBtn) {
+        case "fermerChoixDevis":
+            affichageGestionDevis(false);
+            break;
+        case "validerChoixDevis":
+            affichageGestionDevis(false);
+            break;
+    }
+}
+
 /////////////////////////////////////////////////////////////////////
 // Evènements ///////////////////////////////////////////////////////
 
@@ -559,6 +645,9 @@ document.getElementById("corpsDevis").addEventListener("click", gestionDevis, fa
 
 // affichage
 document.getElementById("parametres").addEventListener("click", panneauParametres, false);
+
+// gestion de la fenêtre des devis
+document.getElementById("choixSelDevis").addEventListener("click", panneauGestionDevis, false);
 
 // à la fin du chargement du contenu
 window.onload = finChargementPage;
