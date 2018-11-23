@@ -323,7 +323,33 @@ td > input {
     border-left: black solid 1px;
 }
 
+#selectFin,
+#selectFin > option {
+    height: 40px !important;
+}
 
+#divers {
+    background-image: url(./img/divers.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 80% auto;
+    width: 40px;
+}
+
+#divers > ul {
+    list-style: none;
+    position: relative !important;
+    bottom: 115%;
+    left: -45px;
+    width: auto !important;
+}
+
+#divers > ul > li {
+    background-color: #929292;
+    width: 100% !important;
+    text-align: center;
+    padding: 0px 5px !important;
+}
 
 #totaux {
     display: flex;

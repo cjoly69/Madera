@@ -651,6 +651,23 @@ function panneauGestionDevis(event) {
     }
 }
 
+/* Active / désactive le panneau "Divers" */
+function panneauDivers(event) {
+    // TOGGLE : https://developer.mozilla.org/fr/docs/Web/API/Element/classList
+    document.getElementById("divers").children[0].classList.toggle("masque");
+    /*
+    // https://developer.mozilla.org/fr/docs/Web/API/Element/classList
+    var pann = document.getElementById("divers").children[0];
+    var panneauOuvert = pann.classList.contains("masque");
+
+    if (panneauOuvert) {
+        panneauOuvert.classList.remove("masque");
+    }
+    else {
+        panneauOuvert.classList.add("masque");
+    }*/
+}
+
 /////////////////////////////////////////////////////////////////////
 // Evènements ///////////////////////////////////////////////////////
 
@@ -669,6 +686,9 @@ document.getElementById("parametres").addEventListener("click", panneauParametre
 
 // gestion de la fenêtre des devis
 document.getElementById("choixSelDevis").addEventListener("click", panneauGestionDevis, false);
+
+// menu "Divers"
+document.getElementById("divers").addEventListener("click", panneauDivers, false);
 
 // à la fin du chargement du contenu
 window.onload = finChargementPage;
