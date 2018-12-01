@@ -113,7 +113,7 @@
                                         <input type="text">
                                     </td>
                                     <td>
-                                        <input type="number" pattern="[-+]?[0-9]*[.,]?[0-9]+" min="0" max="999999999">
+                                        <input id="saisiePrixCtrl" type="number" pattern="[-+]?[0-9]*[.,]?[0-9]+" step="0.01" min="0" max="999999999">
                                     </td>
                                     <td>
                                         <button id="ajLign" class="btnAjLign"></button>
@@ -206,8 +206,8 @@
                         </div>
                     </div>
                     <div id="divers">
-                        <ul class="masque">
-                            <li>Remise commerciale</li>
+                        <ul id="choixOptionsDivers" class="masque">
+                            <li id="remiseComm">Remise commerciale</li>
                         </ul>
                     </div>
                     <div id="totaux">
@@ -236,7 +236,7 @@
 
                 <div id="bodySelDevis">
                     <div id="selectionDevis">
-                        <select name="sometext" size="5">
+                        <select name="" size="5">
                             <option>Devis du jj/mm/aaaa - projet "Manoir baroque" (client Antoine EXUPERY)</option>
                             <option selected>Devis du jj/mm/aaaa - projet "Villa Océane" (client Jean-Michel SARTRE)</option>
                             <option>< nouveau devis ></option>
@@ -253,6 +253,42 @@
                         <div>
                             <button id="telechDevis">Télécharger</button>
                             <button id="envoyerDevis">Envoyer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bodySelRemise" class="masque">
+                    <div>
+                        <div>
+                            <input type="radio" id="remiseGlobale" name="choixRemise" value="Remise globale" />
+                            <label for="remiseGlobale">Remise globale</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="remiseUnitaire" name="choixRemise" value="Remise sur un article" />
+                            <label for="remiseUnitaire">Remise sur un article</label>
+                        </div>
+
+                        <span id="selectionArticles" class="masque">
+                            <select id="selArticleRemise"></select>
+                            <button id="validSelArt">Choisir</button>
+                        </span>
+
+                        <hr />
+
+                        <div id="saisieRemise">
+                            <div>
+                                <input type="number" id="pourcRemise" step="0.01" min="0" max="100" maxlength="3" readonly value="0" /> %
+                            </div>
+                            <div>
+                                <input type="number" id="htRemise" step="0.01" min="0" max="999999999" maxlength="9" readonly value="0" /> €
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div id="choixSelRemise">
+                            <button id="fermerChoixRemise">Annuler</button>
+                            <button id="validerChoixRemise">Valider</button>
                         </div>
                     </div>
                 </div>

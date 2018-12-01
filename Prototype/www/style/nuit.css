@@ -25,13 +25,15 @@ tr {
 }
 
 #validerChoixDevis,
-#validConnex {
+#validConnex,
+#validerChoixRemise {
     background-color: #ffffffb3;
     color: black;
 }
 
 #fermerChoixDevis,
-#effacConnex {
+#effacConnex,
+#fermerChoixRemise {
     border: 1px solid white !important;
     background-color: #fff3;
     color: white;
@@ -89,6 +91,10 @@ tr {
     */
 }
 
+.ligneModif {
+    background-color: rgba(211, 143, 54, 0.68) !important;
+}
+
 #devis > table > tbody > tr:nth-of-type(even) {
     background-color: rgba(255, 255, 255, 0.18);
     color: white;
@@ -96,6 +102,11 @@ tr {
 
 #selectionDevis {
     background-color: #666666;
+}
+
+#bodySelRemise > div {
+    background-color: #666666;
+    color: white;
 }
 
 #telechDevis,

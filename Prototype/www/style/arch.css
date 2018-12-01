@@ -275,6 +275,32 @@ td > input {
 }
 
 .btnValidLign,
+.btnModLign {
+    width: 44% !important;
+}
+
+.btnValidLign,
+.btnModLign,
+.btnSuppLign,
+.btnAjLign {
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    border-radius: unset;
+}
+
+.btnSuppLign {
+    width: 90%;
+    background-size: 30px !important;
+}
+
+.btnValidLign + .btnSuppLign,
+.btnModLign + .btnSuppLign,
+.btnModLign + .btnSuppLign {
+    width: 44%;
+}
+
+/*
+.btnValidLign,
 .btnModLign,
 .btnSuppLign {
     width: 44%;
@@ -282,6 +308,7 @@ td > input {
     background-position: center center !important;
     height: 80%;
 }
+*/
 
 .masque {
     visibility: hidden;
@@ -339,7 +366,7 @@ td > input {
 #divers > ul {
     list-style: none;
     position: relative !important;
-    bottom: 115%;
+    bottom: 71px;
     left: -45px;
     width: auto !important;
 }
@@ -349,6 +376,7 @@ td > input {
     width: 100% !important;
     text-align: center;
     padding: 0px 5px !important;
+    width: 150px !important;
 }
 
 #totaux {
@@ -438,6 +466,11 @@ td > input {
     border: 5px solid gray;
 }
 
+#selectionDevis > select {
+    min-height: 40px;
+}
+
+
 #selectionDevis > div {
     display: flex;
 }
@@ -457,6 +490,65 @@ td > input {
 #selectionDevis h3 {
     margin: 0px;
     text-align: center;
+}
+
+/* Menu "Divers" */
+
+#bodySelRemise {
+    position: absolute;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.78);
+    z-index: 9;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+}
+
+#bodySelRemise > div {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 20px;
+    border: 5px solid gray;
+}
+
+#bodySelRemise > div > div > input,
+#bodySelRemise > div > div > label {
+    font-size: 30px;
+}
+
+#selArticleRemise,
+#validSelArt {
+    height: 40px !important;
+}
+
+#saisieRemise,
+#saisieRemise > div {
+    display: flex;
+    font-size: 25px;
+}
+
+#saisieRemise > div:first-of-type {
+    width: 30%;
+    margin: 0px;
+}
+
+#saisieRemise > div:last-of-type {
+    width: auto;
+    margin-left: auto;
+}
+
+#choixSelRemise {
+    display: flex;
+    align-items: stretch !important;
+}
+
+#choixSelRemise > button {
+    margin: 10px auto 0px auto;
+    width: 40%;
+    height: 40px;
+    border: transparent;
+    font-size: 20px;
 }
 
 /* écran d'attente */

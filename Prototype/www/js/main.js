@@ -17,7 +17,12 @@ var statusCnx = typeStatusConnexion.null;
 
 var txTva = 0.2;
 
-var patternDigit = /[-+]?[0-9]*[.,]?[0-9]+/g;
+var patternDigit = /[0-9]*[.,]?[0-9]+/g;
+var patternCbBoxLignRemise = /\[\d\]/gm;
+
+var idLigneRemise = null;
+
+var montantTtcFact = 8000;
 
 function finChargementPage() {
     // on regarde si un jeton de connexion est disponible
@@ -250,7 +255,7 @@ function gestionDevis(event) {
             nettoyageSaisieLigne();
         }
         else if (event.srcElement.id == "ajLign") {
-            ajoutLigneDevis();
+            ajoutLigneDevisSaisie();
         }
     }
     else {
@@ -287,7 +292,7 @@ function gestionDevis(event) {
 }
 
 // ajoute une ligne au devis
-function ajoutLigneDevis() {
+function ajoutLigneDevisSaisie() {
     if (controleSaisie()) {
         nbLignesDevis++;
 
@@ -299,9 +304,18 @@ function ajoutLigneDevis() {
         // on applique les nouvelles propriétés 
         nvlleLigne.id = nomLigneDevis + nbLignesDevis;
 
-        var val = "";
-        var tabValeur = null;
-        var valeur = "";
+        //var val = "";
+        //var tabValeur = null;
+        //var valeur = "";
+
+        var gamme = ligneSaisie.cells[0].firstElementChild.value;
+        var modele = ligneSaisie.cells[1].firstElementChild.value;
+        var coupePrinc = ligneSaisie.cells[2].firstElementChild.value;
+        var prix = ligneSaisie.cells[3].firstElementChild.value;
+
+        ajoutLigneDevis(gamme, modele, coupePrinc, prix);
+
+        /*
 
         for (var i = 0; i < ligneSaisie.cells.length; i++) {
             if (
@@ -315,11 +329,6 @@ function ajoutLigneDevis() {
 
                     tabValeur = val.match(patternDigit);
                     if (tabValeur != null) {
-                        /*
-                        tabValeur.forEach(element => {
-                            valeur += element;
-                        });
-                        */
 
                         for (var j = 0; j < tabValeur.length; j++) {
                             valeur += tabValeur[j];
@@ -333,16 +342,45 @@ function ajoutLigneDevis() {
             }
         }
 
-        nettoyageSaisieLigne();
+        */
 
-        var corpsDevis = document.getElementById("corpsDevis");
-        corpsDevis.appendChild(nvlleLigne);
+        nettoyageSaisieLigne();
 
         majFacturation();
     }
     else {
         alert("Tous les champs sont obligatoires.");
     }
+}
+
+// Ajoute une ligne de devis et la retourne
+function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
+    // on copie le modèle d'une ligne du devis
+    var nvlleLigne = document.getElementById("modele").cloneNode(true);
+
+    // on applique les nouvelles propriétés 
+    nvlleLigne.id = nomLigneDevis + nbLignesDevis;
+
+    var montantHt = "";
+
+    // transformation du prix (chaine) en montant numérique pour retransformer en chaine avec la séparation des milliers
+    var tabValeur = prix.match(patternDigit);
+    if (tabValeur != null) {
+
+        for (var j = 0; j < tabValeur.length; j++) {
+            montantHt += tabValeur[j];
+        }
+
+        prix = getFormatMillier(montantHt)
+    }
+
+    nvlleLigne.cells[0].innerText = gamme;
+    nvlleLigne.cells[1].innerText = modele;
+    nvlleLigne.cells[2].innerText = coupePrinc;
+    nvlleLigne.cells[3].innerText = prix;
+
+    // on ajoute la ligne et on l'a retourne
+    return document.getElementById("corpsDevis").appendChild(nvlleLigne);
 }
 
 // gestion de la suppression d'une ligne
@@ -478,8 +516,10 @@ function nettoyageSaisieLigne() {
     numLigneDevisModif = -1;
 }
 
-// effectue les opérations affichant ou non les boutons [validation / annulation]
+// effectue les opérations affichant ou non les boutons [validation / annulation] + met en valeur la ligne en cours de modification
 function modifBtnSaisieLigne(aMasquer) {
+    var formModif = document.getElementById(nomLigneDevis + numLigneDevisModif);
+
     if (aMasquer) {
         document.getElementById("ajLign").classList.remove("masqueBtn");
         document.getElementById("ajLign").classList.remove("masque");
@@ -489,6 +529,10 @@ function modifBtnSaisieLigne(aMasquer) {
 
         document.getElementById("annulModif").classList.add("masqueBtn");
         document.getElementById("annulModif").classList.add("masque");
+
+        if (formModif != null) {
+            formModif.classList.remove("ligneModif");
+        }
     }
     else {
         document.getElementById("ajLign").classList.add("masqueBtn");
@@ -499,6 +543,10 @@ function modifBtnSaisieLigne(aMasquer) {
 
         document.getElementById("annulModif").classList.remove("masqueBtn");
         document.getElementById("annulModif").classList.remove("masque");
+
+        if (formModif != null) {
+            formModif.classList.add("ligneModif");
+        }
     }
 }
 
@@ -546,28 +594,52 @@ function majFacturation() {
         formTr = document.getElementById("corpsDevis").children[i];
 
         if (formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis) {
+            /*
             valeur = "";
 
             // on remplace tout ce qui n'est pas numérique par rien
             tabValeur = formTr.children[3].innerText.match(patternDigit);
-            /*
-            tabValeur.forEach(element => {
-                valeur += element;
-            });
-            */
 
             for (var j = 0; j < tabValeur.length; j++) {
                 valeur += tabValeur[j];
             }
 
             ttc += Number(valeur.replace(",", "."));
+            */
+
+            ttc += GetMontant(formTr.children[3].innerText);
         }
     }
 
     // https://www.toutjavascript.com/reference/ref-math.round.php
+    montantHt = (Math.round(ttc * (1 - txTva)) * 100) / 100;
+
     document.getElementById("totalTtc").innerText = getFormatMillier((Math.round(ttc) * 100) / 100);
-    document.getElementById("totalHt").innerText = getFormatMillier((Math.round(ttc * (1 - txTva)) * 100) / 100);
+    document.getElementById("totalHt").innerText = getFormatMillier(montantHt);
     document.getElementById("totalTva").innerText = getFormatMillier((Math.round(ttc * txTva) * 100) / 100);
+}
+
+// Retourne la valeur numérique située dans une chaine
+function GetMontant(valeurStr) {
+    var r = "";
+
+    // on remplace tout ce qui n'est pas numérique par rien
+    tabValeur = valeurStr.match(patternDigit);
+
+    if (tabValeur != null) {
+        for (var j = 0; j < tabValeur.length; j++) {
+            r += tabValeur[j];
+        }
+
+        // si le nombre est négatif, le signe n'est pas tout le temps pris en compte
+        if (valeurStr.trim()[0] == "-" && r.trim()[0] != "-") {
+            r = "-" + r;
+        }
+
+        r = Number(r.replace(",", "."));
+    }
+
+    return r;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -668,6 +740,222 @@ function panneauDivers(event) {
     }*/
 }
 
+/* choix d'une option dans le panneau Divers */
+function panneauSelDivers(event) {
+    var form = event.srcElement.id;
+
+    switch (form) {
+        case "remiseComm":
+            document.getElementById("bodySelRemise").classList.remove("masque");
+            break;
+    }
+}
+
+/* Choix d'une remise et de ses options */
+function panneauSelRemise(event) {
+    var type = event.srcElement.localName;
+
+    if (type == "input" || type =="button") {
+        var form = event.srcElement.id;
+
+        switch (form) {
+            case "remiseGlobale":
+                document.getElementById("selectionArticles").classList.add("masque");
+
+                document.getElementById("pourcRemise").readOnly = false;
+                document.getElementById("htRemise").readOnly = false;
+                break;
+
+            case "remiseUnitaire":
+                document.getElementById("selectionArticles").classList.add("masque");
+
+                document.getElementById("pourcRemise").readOnly = true;
+                document.getElementById("htRemise").readOnly = true;
+
+                var listArt = GenListeArticles();
+
+                if (listArt != null && listArt.length > 0) {
+                    var selArt = document.getElementById("selArticleRemise");
+                    selArt.innerHTML = "";
+
+                    for (var i = 0; i < listArt.length; i++) {
+                        //selArt.innerHTML += '<div><input type="radio" name="choixRemiseGlobale_' + i + '" value="' + listArt[i] + '" /><label for="choixRemiseGlobale_' + i + '">' + listArt[i] + '</label><div>'
+                        selArt.innerHTML += '<option value="' + i + '">' + listArt[i] + '</option>';
+                    }
+                }
+
+                if (selArt.innerHTML.length > 0) {
+                    document.getElementById("selectionArticles").classList.remove("masque");
+                }
+                break;
+
+            case "validSelArt":
+                document.getElementById("pourcRemise").readOnly = false;
+                document.getElementById("htRemise").readOnly = false;
+
+                // récupération de l'ID de la ligne
+                // https://stackoverflow.com/a/1085810
+                var e = document.getElementById("selArticleRemise");
+                var tab = e[e.selectedIndex].innerText.match(patternCbBoxLignRemise);
+
+                if (tab != null && tab.length > 0) {
+                    idLigneRemise = Number(tab[0].substring(1, tab[0].length - 1));
+                }
+                break;
+
+
+            case "fermerChoixRemise":
+                idLigneRemise = null;
+                document.getElementById("bodySelRemise").classList.add("masque");
+                break;
+
+            case "pourcRemise":
+                if (!event.srcElement.readOnly) {
+                    //var pourcentage = Number(document.getElementById("pourcRemise").value) / 100;
+                    var montantApplique = 0;
+
+                    // on regarde quel bouton radio est cochée
+                    var nomBtnRadio = GetRadioSel();
+
+                    switch (nomBtnRadio) {
+                        case "remiseGlobale":
+                            montantApplique = montantTtcFact;
+                            break;
+
+                        // récupération de la valeur de l'article
+                        case "remiseUnitaire":
+                            montantApplique = GetMontant(document.getElementById(nomLigneDevis + idLigneRemise).children[3].innerText)
+                            break;
+                    }
+
+                    if (nomBtnRadio != "") {
+                        var pourcentage = Number(event.srcElement.value) / 100;
+
+                        if (pourcentage <= 100 && pourcentage > 1) {
+                            document.getElementById("htRemise").value = Math.round(pourcentage * montantApplique * 100) / 100;
+                        }
+                        else {
+                            alert("Le pourcentage de réduction ne peut dépasser 100 % ou être inférieur à 0 %.")
+                        }
+                    }
+                }
+                break;
+
+            case "validerChoixRemise":
+                // on regarde si un bouton radio est sélèctionné ainsi qu'un montant HT
+
+                var montantTtcRemise = document.getElementById("htRemise").value;
+
+                var nomBtnRadio = GetRadioSel();
+
+                if (
+                    nomBtnRadio.length > 0 &&
+                    montantTtcRemise > 0
+                ) {
+                    var gamme = "# REMISE";
+                    var modele = "GLOBAL";
+                    var coupePrinc = "";
+                    var prix = "-" + montantTtcRemise;
+
+                    // si c'est une remise sur un article, on précise l'article dans le modèle
+                    if (nomBtnRadio == "remiseUnitaire") {
+                        var e = document.getElementById("selArticleRemise");
+                        modele = e[e.selectedIndex].innerText.toUpperCase();
+                    }
+
+                    var ligneAjoute = ajoutLigneDevis(gamme, modele, coupePrinc, prix);
+
+                    // on supprime le bouton d'édition
+                    ligneAjoute.children[4].children[0].remove();
+
+                    idLigneRemise = null;
+                    document.getElementById("bodySelRemise").classList.add("masque");
+
+                    // remet à zéro les boutons radio
+                    var formRadio = document.getElementsByName("choixRemise");
+                    if (formRadio != null) {
+                        for (var i = 0; i < formRadio.length; i++) {
+                                formRadio[i].checked = false
+                        }
+                    }
+
+                    // efface le contenu de la comboBox des articles
+                    document.getElementById("selArticleRemise").innerText = "";
+                    document.getElementById("selectionArticles").classList.add("masque");
+                    document.getElementById("pourcRemise").value = 0;
+                    document.getElementById("htRemise").value = 0;
+
+                    majFacturation();
+                }
+                else {
+                    alert("Vous devez choisir un type de remise ainsi qu'un montant HT supérieur à 0 pour valider cette remise.")
+                }
+                break;
+        }
+    }
+}
+
+/* Bouton radio choisi pour la remise */
+function GetRadioSel() {
+    var formRadio = document.getElementsByName("choixRemise");
+    var r = "";
+
+    if (formRadio != null) {
+        for (var i = 0; i < formRadio.length; i++) {
+            if (formRadio[i].checked) {
+                r = formRadio[i].id;
+                break;
+            }
+        }
+    }
+
+    return r;
+}
+
+/* Retourne la liste des articles */
+function GenListeArticles() {
+    var listArticles = new Array();
+
+    var lenTab = document.getElementById("corpsDevis").children.length;
+    for (var i = 0; i < lenTab; i++) {
+        formTr = document.getElementById("corpsDevis").children[i];
+
+        if (formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis) {
+            var numLign = formTr.id.substring(nomLigneDevis.length, formTr.id.length);
+
+            listArticles.push("[" + numLign + "] " + formTr.children[0].innerText + " / " + formTr.children[1].innerText + " (" + formTr.children[3].innerText + " €)");
+        }
+    }
+
+    return listArticles;
+}
+
+// interdiction des caractères spéciaux du pavé numérique du clavier d'Android
+function paveNumAndroid(event) {
+    // https://keycode.info/
+    /*
+        -   0
+        +   61
+        .   190 (autorisé)
+        *   56
+        /   191
+        ,   188 (autorisé)
+        (   57
+        )   48
+        =   61
+            32
+        #   51
+
+        Sur Android, le pavé numérique : - + . , * 8 ( ) = # et ' ' = 0
+    */
+
+    if (event.keyCode == 0) {       
+        event.preventDefault();
+        event.stopPropagation();
+        event.returnValue = false;
+    }
+}
+
 /////////////////////////////////////////////////////////////////////
 // Evènements ///////////////////////////////////////////////////////
 
@@ -689,6 +977,18 @@ document.getElementById("choixSelDevis").addEventListener("click", panneauGestio
 
 // menu "Divers"
 document.getElementById("divers").addEventListener("click", panneauDivers, false);
+
+// sélection d'une ligne du menu
+document.getElementById("choixOptionsDivers").addEventListener("click", panneauSelDivers, false);
+
+// sélection d'une remise et de ses options
+document.getElementById("bodySelRemise").addEventListener("click", panneauSelRemise, false);
+
+// interdiction de la saisie de certains caractères via le pavé numérique Android
+// https://stackoverflow.com/a/41715052
+document.getElementById("saisiePrixCtrl").addEventListener("keydown", paveNumAndroid, false);
+document.getElementById("pourcRemise").addEventListener("keydown", paveNumAndroid, false);
+document.getElementById("htRemise").addEventListener("keydown", paveNumAndroid, false);
 
 // à la fin du chargement du contenu
 window.onload = finChargementPage;
