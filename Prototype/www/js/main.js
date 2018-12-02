@@ -17,7 +17,7 @@ var statusCnx = typeStatusConnexion.null;
 
 var txTva = 0.2;
 
-var patternDigit = /[0-9]*[.,]?[0-9]+/g;
+var patternDigit = /[-+]?[0-9]*[.,]?[0-9]+/g;
 var patternCbBoxLignRemise = /\[\d\]/gm;
 
 var idLigneRemise = null;
@@ -810,35 +810,7 @@ function panneauSelRemise(event) {
                 break;
 
             case "pourcRemise":
-                if (!event.srcElement.readOnly) {
-                    //var pourcentage = Number(document.getElementById("pourcRemise").value) / 100;
-                    var montantApplique = 0;
-
-                    // on regarde quel bouton radio est cochée
-                    var nomBtnRadio = GetRadioSel();
-
-                    switch (nomBtnRadio) {
-                        case "remiseGlobale":
-                            montantApplique = montantTtcFact;
-                            break;
-
-                        // récupération de la valeur de l'article
-                        case "remiseUnitaire":
-                            montantApplique = GetMontant(document.getElementById(nomLigneDevis + idLigneRemise).children[3].innerText)
-                            break;
-                    }
-
-                    if (nomBtnRadio != "") {
-                        var pourcentage = Number(event.srcElement.value) / 100;
-
-                        if (pourcentage <= 100 && pourcentage > 1) {
-                            document.getElementById("htRemise").value = Math.round(pourcentage * montantApplique * 100) / 100;
-                        }
-                        else {
-                            alert("Le pourcentage de réduction ne peut dépasser 100 % ou être inférieur à 0 %.")
-                        }
-                    }
-                }
+                CalculRemisePourc(event);
                 break;
 
             case "validerChoixRemise":
@@ -891,6 +863,39 @@ function panneauSelRemise(event) {
                     alert("Vous devez choisir un type de remise ainsi qu'un montant HT supérieur à 0 pour valider cette remise.")
                 }
                 break;
+        }
+    }
+}
+
+// calcul de la remise depuis le pourcentage accordé
+function CalculRemisePourc(event) {
+    if (!event.srcElement.readOnly) {
+        //var pourcentage = Number(document.getElementById("pourcRemise").value) / 100;
+        var montantApplique = 0;
+
+        // on regarde quel bouton radio est cochée
+        var nomBtnRadio = GetRadioSel();
+
+        switch (nomBtnRadio) {
+            case "remiseGlobale":
+                montantApplique = montantTtcFact;
+                break;
+
+            // récupération de la valeur de l'article
+            case "remiseUnitaire":
+                montantApplique = GetMontant(document.getElementById(nomLigneDevis + idLigneRemise).children[3].innerText)
+                break;
+        }
+
+        if (nomBtnRadio != "") {
+            var pourcentage = Number(event.srcElement.value) / 100;
+
+            if (pourcentage <= 100 && pourcentage >= 0) {
+                document.getElementById("htRemise").value = Math.round(pourcentage * montantApplique * 100) / 100;
+            }
+            else {
+                alert("Le pourcentage de réduction ne peut dépasser 100 % ou être inférieur à 0 %.")
+            }
         }
     }
 }
@@ -949,10 +954,22 @@ function paveNumAndroid(event) {
         Sur Android, le pavé numérique : - + . , * 8 ( ) = # et ' ' = 0
     */
 
-    if (event.keyCode == 0) {       
+    if (event.srcElement.id == "pourcRemise") {
+        CalculRemisePourc(event);
+    }
+
+    if (event.keyCode == 0) {
+        /*
+        event.stopPropagation();
         event.preventDefault();
         event.stopPropagation();
         event.returnValue = false;
+        event.cancelBubble = true;
+
+        return false;
+        */
+
+        event.srcElement.value = event.srcElement.value;
     }
 }
 
@@ -986,9 +1003,9 @@ document.getElementById("bodySelRemise").addEventListener("click", panneauSelRem
 
 // interdiction de la saisie de certains caractères via le pavé numérique Android
 // https://stackoverflow.com/a/41715052
-document.getElementById("saisiePrixCtrl").addEventListener("keydown", paveNumAndroid, false);
-document.getElementById("pourcRemise").addEventListener("keydown", paveNumAndroid, false);
-document.getElementById("htRemise").addEventListener("keydown", paveNumAndroid, false);
+document.getElementById("saisiePrixCtrl").addEventListener("keyup", paveNumAndroid, true);
+document.getElementById("pourcRemise").addEventListener("keyup", paveNumAndroid, true);
+document.getElementById("htRemise").addEventListener("keyup", paveNumAndroid, true);
 
 // à la fin du chargement du contenu
 window.onload = finChargementPage;
