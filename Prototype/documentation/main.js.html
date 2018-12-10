@@ -1,4 +1,32 @@
-var nomLigneDevis = "devL_";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var nomLigneDevis = "devL_";
 var nbLignesDevis = 4;
 var numLigneDevisModif = -1;
 
@@ -105,7 +133,7 @@ function gestionConnexion() {
 
     if (!estConnecte) {
         if (
-            idUt == idUtilisateur &&
+            idUt == idUtilisateur &amp;&amp;
             mdpUtilisateur == mdp
         ) {
             estConnecte = true;
@@ -203,7 +231,7 @@ function changePage(event) {
 function desactiveBtn(nomBtn) {
     var children = document.getElementById("menu").children;
 
-    for (var i = 0; i < children.length; i++) {
+    for (var i = 0; i &lt; children.length; i++) {
         var child = children[i];
 
         if (child.name == nomBtn) {
@@ -219,7 +247,7 @@ function desactiveBtn(nomBtn) {
 function desactiveTsBtn() {
     var children = document.getElementById("menu").children;
 
-    for (var i = 0; i < children.length; i++) {
+    for (var i = 0; i &lt; children.length; i++) {
         var child = children[i];
 
         if (child.name != "parametres") {
@@ -235,7 +263,7 @@ function desactiveTsBtn() {
 function activeBtn(nomBtn) {
     var children = document.getElementById("menu").children;
 
-    for (var i = 0; i < children.length; i++) {
+    for (var i = 0; i &lt; children.length; i++) {
         var child = children[i];
 
         if (child.name == nomBtn) {
@@ -251,7 +279,7 @@ function activeBtn(nomBtn) {
 function desactivePages() {
     var children = document.getElementById("page").children;
 
-    for (var i = 0; i < children.length; i++) {
+    for (var i = 0; i &lt; children.length; i++) {
         children[i].classList.remove("active");
         children[i].classList.add("masque");
     }
@@ -264,7 +292,7 @@ function desactivePages() {
 function activePage(nomPage) {
     var children = document.getElementById("page").children;
 
-    for (var i = 0; i < children.length; i++) {
+    for (var i = 0; i &lt; children.length; i++) {
         var child = children[i];
 
         if (child.id == nomPage) {
@@ -283,7 +311,7 @@ function activePage(nomPage) {
  * @param Evènement javascript
  */
 function gestionDevis(event) {
-    var ligne = event.srcElement.parentNode.parentNode; // on revient jusqu'à la balise <tr>
+    var ligne = event.srcElement.parentNode.parentNode; // on revient jusqu'à la balise &lt;tr>
 
     if (ligne.id == "saisieLignDevis") {
         if (event.srcElement.id == "validModif") {
@@ -298,7 +326,7 @@ function gestionDevis(event) {
     }
     else {
         if (!estEnModification) {
-            if (ligne.id != undefined && ligne.id != "") {
+            if (ligne.id != undefined &amp;&amp; ligne.id != "") {
                 var nomFonct = event.srcElement.className;
 
                 switch (nomFonct) {
@@ -357,7 +385,7 @@ function ajoutLigneDevisSaisie() {
 
         /*
 
-        for (var i = 0; i < ligneSaisie.cells.length; i++) {
+        for (var i = 0; i &lt; ligneSaisie.cells.length; i++) {
             if (
                 ligneSaisie.cells[i].firstElementChild.type === "text" ||
                 ligneSaisie.cells[i].firstElementChild.type === "number"
@@ -370,7 +398,7 @@ function ajoutLigneDevisSaisie() {
                     tabValeur = val.match(patternDigit);
                     if (tabValeur != null) {
 
-                        for (var j = 0; j < tabValeur.length; j++) {
+                        for (var j = 0; j &lt; tabValeur.length; j++) {
                             valeur += tabValeur[j];
                         }
 
@@ -414,7 +442,7 @@ function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
     var tabValeur = prix.match(patternDigit);
     if (tabValeur != null) {
 
-        for (var j = 0; j < tabValeur.length; j++) {
+        for (var j = 0; j &lt; tabValeur.length; j++) {
             montantHt += tabValeur[j];
         }
 
@@ -456,7 +484,7 @@ function modificationLigneDevis(ligne) {
     document.getElementById("annulModif").classList.remove("masqueBtn masque");
     */
 
-    for (var i = 0; i < ligneSaisie.cells.length; i++) {
+    for (var i = 0; i &lt; ligneSaisie.cells.length; i++) {
         if (
             ligneSaisie.cells[i].firstElementChild.type === "text" ||
             ligneSaisie.cells[i].firstElementChild.type === "number"
@@ -474,7 +502,7 @@ function modificationLigneDevis(ligne) {
                     });
                     */
 
-                    for (var j = 0; j < tabValeur.length; j++) {
+                    for (var j = 0; j &lt; tabValeur.length; j++) {
                         valeur += tabValeur[j];
                     }
 
@@ -497,7 +525,7 @@ function majLigneDevis() {
             var ligneSaisie = document.getElementById("saisieLignDevis");
             var ligne = document.getElementById(nomLigneDevis + numLigneDevisModif);
 
-            for (var i = 0; i < ligneSaisie.cells.length; i++) {
+            for (var i = 0; i &lt; ligneSaisie.cells.length; i++) {
                 if (
                     ligneSaisie.cells[i].firstElementChild.type === "text" ||
                     ligneSaisie.cells[i].firstElementChild.type === "number"
@@ -515,7 +543,7 @@ function majLigneDevis() {
                             });
                             */
 
-                            for (var j = 0; j < tabValeur.length; j++) {
+                            for (var j = 0; j &lt; tabValeur.length; j++) {
                                 valeur += tabValeur[j];
                             }
 
@@ -552,7 +580,7 @@ function majLigneDevis() {
 function nettoyageSaisieLigne() {
     var ligneSaisie = document.getElementById("saisieLignDevis");
 
-    for (var i = 0; i < ligneSaisie.cells.length; i++) {
+    for (var i = 0; i &lt; ligneSaisie.cells.length; i++) {
         if (
             ligneSaisie.cells[i].firstElementChild.type === "text" ||
             ligneSaisie.cells[i].firstElementChild.type === "number"
@@ -618,7 +646,7 @@ function controleSaisie() {
 
     var ligneSaisie = document.getElementById("saisieLignDevis");
 
-    for (var i = 0; i < ligneSaisie.cells.length; i++) {
+    for (var i = 0; i &lt; ligneSaisie.cells.length; i++) {
         if (
             ligneSaisie.cells[i].firstElementChild.type === "text" ||
             ligneSaisie.cells[i].firstElementChild.type === "number"
@@ -661,7 +689,7 @@ function majFacturation() {
     var valeur = '';
 
     // on parcourt chaque ligne pour obtenir le ttc
-    for (var i = 0; i < lenTab; i++) {
+    for (var i = 0; i &lt; lenTab; i++) {
         formTr = document.getElementById("corpsDevis").children[i];
 
         if (formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis) {
@@ -671,7 +699,7 @@ function majFacturation() {
             // on remplace tout ce qui n'est pas numérique par rien
             tabValeur = formTr.children[3].innerText.match(patternDigit);
 
-            for (var j = 0; j < tabValeur.length; j++) {
+            for (var j = 0; j &lt; tabValeur.length; j++) {
                 valeur += tabValeur[j];
             }
 
@@ -702,12 +730,12 @@ function getMontant(valeurStr) {
     tabValeur = valeurStr.match(patternDigit);
 
     if (tabValeur != null) {
-        for (var j = 0; j < tabValeur.length; j++) {
+        for (var j = 0; j &lt; tabValeur.length; j++) {
             r += tabValeur[j];
         }
 
         // si le nombre est négatif, le signe n'est pas tout le temps pris en compte
-        if (valeurStr.trim()[0] == "-" && r.trim()[0] != "-") {
+        if (valeurStr.trim()[0] == "-" &amp;&amp; r.trim()[0] != "-") {
             r = "-" + r;
         }
 
@@ -871,13 +899,13 @@ function panneauSelRemise(event) {
 
                 var listArt = genListeArticles();
 
-                if (listArt != null && listArt.length > 0) {
+                if (listArt != null &amp;&amp; listArt.length > 0) {
                     var selArt = document.getElementById("selArticleRemise");
                     selArt.innerHTML = "";
 
-                    for (var i = 0; i < listArt.length; i++) {
-                        //selArt.innerHTML += '<div><input type="radio" name="choixRemiseGlobale_' + i + '" value="' + listArt[i] + '" /><label for="choixRemiseGlobale_' + i + '">' + listArt[i] + '</label><div>'
-                        selArt.innerHTML += '<option value="' + i + '">' + listArt[i] + '</option>';
+                    for (var i = 0; i &lt; listArt.length; i++) {
+                        //selArt.innerHTML += '&lt;div>&lt;input type="radio" name="choixRemiseGlobale_' + i + '" value="' + listArt[i] + '" />&lt;label for="choixRemiseGlobale_' + i + '">' + listArt[i] + '&lt;/label>&lt;div>'
+                        selArt.innerHTML += '&lt;option value="' + i + '">' + listArt[i] + '&lt;/option>';
                     }
                 }
 
@@ -895,7 +923,7 @@ function panneauSelRemise(event) {
                 var e = document.getElementById("selArticleRemise");
                 var tab = e[e.selectedIndex].innerText.match(patternCbBoxLignRemise);
 
-                if (tab != null && tab.length > 0) {
+                if (tab != null &amp;&amp; tab.length > 0) {
                     idLigneRemise = Number(tab[0].substring(1, tab[0].length - 1));
                 }
                 break;
@@ -918,7 +946,7 @@ function panneauSelRemise(event) {
                 var nomBtnRadio = getRadioSel();
 
                 if (
-                    nomBtnRadio.length > 0 &&
+                    nomBtnRadio.length > 0 &amp;&amp;
                     montantTtcRemise > 0
                 ) {
                     var gamme = "# REMISE";
@@ -943,7 +971,7 @@ function panneauSelRemise(event) {
                     // remet à zéro les boutons radio
                     var formRadio = document.getElementsByName("choixRemise");
                     if (formRadio != null) {
-                        for (var i = 0; i < formRadio.length; i++) {
+                        for (var i = 0; i &lt; formRadio.length; i++) {
                                 formRadio[i].checked = false
                         }
                     }
@@ -990,7 +1018,7 @@ function calculRemisePourc(event) {
         if (nomBtnRadio != "") {
             var pourcentage = Number(event.srcElement.value) / 100;
 
-            if (pourcentage <= 100 && pourcentage >= 0) {
+            if (pourcentage &lt;= 100 &amp;&amp; pourcentage >= 0) {
                 document.getElementById("htRemise").value = Math.round(pourcentage * montantApplique * 100) / 100;
             }
             else {
@@ -1009,7 +1037,7 @@ function getRadioSel() {
     var r = "";
 
     if (formRadio != null) {
-        for (var i = 0; i < formRadio.length; i++) {
+        for (var i = 0; i &lt; formRadio.length; i++) {
             if (formRadio[i].checked) {
                 r = formRadio[i].id;
                 break;
@@ -1028,7 +1056,7 @@ function genListeArticles() {
     var listArticles = new Array();
 
     var lenTab = document.getElementById("corpsDevis").children.length;
-    for (var i = 0; i < lenTab; i++) {
+    for (var i = 0; i &lt; lenTab; i++) {
         formTr = document.getElementById("corpsDevis").children[i];
 
         if (formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis) {
@@ -1117,4 +1145,26 @@ document.getElementById("pourcRemise").addEventListener("keyup", paveNumAndroid,
 document.getElementById("htRemise").addEventListener("keyup", paveNumAndroid, true);
 
 // à la fin du chargement du contenu
-window.onload = finChargementPage;
+window.onload = finChargementPage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#activationModeAff">activationModeAff</a></li><li><a href="global.html#activeBtn">activeBtn</a></li><li><a href="global.html#activePage">activePage</a></li><li><a href="global.html#affichageGestionDevis">affichageGestionDevis</a></li><li><a href="global.html#ajoutLigneDevis">ajoutLigneDevis</a></li><li><a href="global.html#ajoutLigneDevisSaisie">ajoutLigneDevisSaisie</a></li><li><a href="global.html#calculRemisePourc">calculRemisePourc</a></li><li><a href="global.html#changePage">changePage</a></li><li><a href="global.html#cnxModeAffichage">cnxModeAffichage</a></li><li><a href="global.html#cnxUtilisateur">cnxUtilisateur</a></li><li><a href="global.html#controleSaisie">controleSaisie</a></li><li><a href="global.html#decnxUtilisateur">decnxUtilisateur</a></li><li><a href="global.html#desactiveBtn">desactiveBtn</a></li><li><a href="global.html#desactivePages">desactivePages</a></li><li><a href="global.html#desactiveTsBtn">desactiveTsBtn</a></li><li><a href="global.html#finChargementPage">finChargementPage</a></li><li><a href="global.html#genListeArticles">genListeArticles</a></li><li><a href="global.html#gestionConnexion">gestionConnexion</a></li><li><a href="global.html#gestionDevis">gestionDevis</a></li><li><a href="global.html#getFormatMillier">getFormatMillier</a></li><li><a href="global.html#getMontant">getMontant</a></li><li><a href="global.html#getRadioSel">getRadioSel</a></li><li><a href="global.html#majFacturation">majFacturation</a></li><li><a href="global.html#majLigneDevis">majLigneDevis</a></li><li><a href="global.html#modifBtnSaisieLigne">modifBtnSaisieLigne</a></li><li><a href="global.html#modificationLigneDevis">modificationLigneDevis</a></li><li><a href="global.html#nettoyageSaisieLigne">nettoyageSaisieLigne</a></li><li><a href="global.html#panneauDivers">panneauDivers</a></li><li><a href="global.html#panneauGestionDevis">panneauGestionDevis</a></li><li><a href="global.html#panneauParametres">panneauParametres</a></li><li><a href="global.html#panneauSelDivers">panneauSelDivers</a></li><li><a href="global.html#panneauSelRemise">panneauSelRemise</a></li><li><a href="global.html#paveNumAndroid">paveNumAndroid</a></li><li><a href="global.html#suppressionLigneDevis">suppressionLigneDevis</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Dec 10 2018 11:21:00 GMT+0100 (Paris, Madrid)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
