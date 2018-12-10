@@ -24,6 +24,9 @@ var idLigneRemise = null;
 
 var montantTtcFact = 8000;
 
+/**
+ * Gère la fin du chargement d'une page
+ */
 function finChargementPage() {
     // on regarde si un jeton de connexion est disponible
     jetonTest = localStorage.getItem("jetonCnx");
@@ -62,6 +65,10 @@ function finChargementPage() {
 /////////////////////////////////////////////////////////////////////
 // Connexion ////////////////////////////////////////////////////////
 
+/**
+ * Assure la connexion de l'utilisateur
+ * \param Evènement javascript
+ */
 function cnxUtilisateur(event) {
     var nomBtn = event.srcElement.id;
 
@@ -78,6 +85,9 @@ function cnxUtilisateur(event) {
     }
 }
 
+/**
+ * Déconnecte l'utilisateur et rafraichit l'interface
+ */
 function decnxUtilisateur() {
     statusCnx = typeStatusConnexion.enDeconnexion;
     localStorage.removeItem("jetonCnx");
@@ -86,6 +96,9 @@ function decnxUtilisateur() {
     statusCnx = typeStatusConnexion.null;
 }
 
+/**
+ * Gère la connexion automatique de l'utilisateur et met à jour l'interface
+ */
 function gestionConnexion() {
     var idUt = document.getElementById("idUtilisateur").value;
     var mdp = document.getElementById("mdpUtilisateur").value;
@@ -121,6 +134,10 @@ function gestionConnexion() {
     }
 }
 
+/**
+ * Mode d'affichage JOUR / NUIT
+ * \param Evènement javascript
+ */
 function cnxModeAffichage(event) {
     var nomBtn = event.srcElement.id;
 
@@ -140,6 +157,10 @@ function cnxModeAffichage(event) {
 /////////////////////////////////////////////////////////////////////
 // Menu /////////////////////////////////////////////////////////////
 
+/**
+ * Gestion des pages d'après le clic dans le menu
+ * \param Evènement javascript
+ */
 function changePage(event) {
     var nomPage = event.srcElement.name;
 
@@ -175,7 +196,10 @@ function changePage(event) {
     }
 }
 
-// désactive le bouton
+/**
+ * Rend inactive un bouton du menu
+ * \param Nom du bouton
+ */
 function desactiveBtn(nomBtn) {
     var children = document.getElementById("menu").children;
 
@@ -189,7 +213,9 @@ function desactiveBtn(nomBtn) {
     }
 }
 
-// retire la classe "btnActif" de tous les boutons du menu
+/**
+ * Rend inactive tous les boutons du menu
+ */
 function desactiveTsBtn() {
     var children = document.getElementById("menu").children;
 
@@ -202,7 +228,10 @@ function desactiveTsBtn() {
     }
 }
 
-// place la classe "btnActif" sur le bouton, dont le nom est passé en paramètre
+/**
+ * Active le bouton du menu passé en paramètre
+ * \param Nom du bouton à rendre actif
+ */
 function activeBtn(nomBtn) {
     var children = document.getElementById("menu").children;
 
@@ -216,7 +245,9 @@ function activeBtn(nomBtn) {
     }
 }
 
-// retire la page actuellement visible
+/**
+ * Retire les pages affichées
+ */
 function desactivePages() {
     var children = document.getElementById("page").children;
 
@@ -226,7 +257,10 @@ function desactivePages() {
     }
 }
 
-// place la classe "active" sur la page à afficher
+/**
+ * Retire la page actuellement affichée
+ * \param Nom de la page
+ */
 function activePage(nomPage) {
     var children = document.getElementById("page").children;
 
@@ -244,6 +278,10 @@ function activePage(nomPage) {
 /////////////////////////////////////////////////////////////////////
 // Corps du devis ///////////////////////////////////////////////////
 
+/**
+ * Opérations effectuées sur les lignes du devis
+ * \param Evènement javascript
+ */
 function gestionDevis(event) {
     var ligne = event.srcElement.parentNode.parentNode; // on revient jusqu'à la balise <tr>
 
@@ -291,7 +329,9 @@ function gestionDevis(event) {
     }
 }
 
-// ajoute une ligne au devis
+/**
+ * Ajoute une ligne de devis saisie par l'utilisateur
+ */
 function ajoutLigneDevisSaisie() {
     if (controleSaisie()) {
         nbLignesDevis++;
@@ -353,7 +393,14 @@ function ajoutLigneDevisSaisie() {
     }
 }
 
-// Ajoute une ligne de devis et la retourne
+/**
+ * Ajoute une ligne de devis et l'a retourne
+ * \param Gamme
+ * \param Modèle
+ * \param Coupe de principe
+ * \param Prix
+ * \return Ligne de devis ajoutée
+ */
 function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
     // on copie le modèle d'une ligne du devis
     var nvlleLigne = document.getElementById("modele").cloneNode(true);
@@ -383,14 +430,20 @@ function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
     return document.getElementById("corpsDevis").appendChild(nvlleLigne);
 }
 
-// gestion de la suppression d'une ligne
+/**
+ * Suppression d'une ligne
+ * \param Ligne de devis en tant que noeud HTML
+ */
 function suppressionLigneDevis(ligne) {
     ligne.remove();
 
     majFacturation();
 }
 
-// permet à l'utilisateur de modifier une ligne de devis
+/**
+ * Modification d'une ligne de devis
+ * \param Ligne de devis en tant que noeud HTML
+ */
 function modificationLigneDevis(ligne) {
     var ligneSaisie = document.getElementById("saisieLignDevis");
 
@@ -434,7 +487,9 @@ function modificationLigneDevis(ligne) {
     }
 }
 
-// mise à jour de la ligne de devis
+/**
+ * Met à jour la ligne de devis actuellement en modification
+ */
 function majLigneDevis() {
     if (numLigneDevisModif != -1) {
 
@@ -491,7 +546,9 @@ function majLigneDevis() {
     }
 }
 
-// nettoie la zone de saisie
+/**
+ * Nettoye la zone de saisie
+ */
 function nettoyageSaisieLigne() {
     var ligneSaisie = document.getElementById("saisieLignDevis");
 
@@ -516,7 +573,10 @@ function nettoyageSaisieLigne() {
     numLigneDevisModif = -1;
 }
 
-// effectue les opérations affichant ou non les boutons [validation / annulation] + met en valeur la ligne en cours de modification
+/**
+ * Effectue les opérations pour affichier ou non les boutons [validation / annulation] et met en valeur la ligne en cours de modification
+ * \param Booléan pour masquer les boutons de modification
+ */
 function modifBtnSaisieLigne(aMasquer) {
     var formModif = document.getElementById(nomLigneDevis + numLigneDevisModif);
 
@@ -549,7 +609,10 @@ function modifBtnSaisieLigne(aMasquer) {
         }
     }
 }
-
+/**
+ * Contrôle de la saisie utilisateur, dans la zone de saisie d'une ligne de devis
+ * \return Booléan indiquant si la saisie est valide ou non
+ */
 function controleSaisie() {
     var r = true;
 
@@ -570,10 +633,18 @@ function controleSaisie() {
     return r;
 }
 
+/**
+ * Retourne la chaine de caractères dans un format avec un séparateur de milliers
+ * \param Montant au format "chaîne de caractères"
+ * \return Montant au format "chaîne de caractères", avec les séparateurs de milliers
+ */
 function getFormatMillier(montant) {
     return String(montant).replace(/(.)(?=(\d{3})+$)/g, '$1 ')
 }
 
+/**
+ * Recalcule la facturation
+ */
 function majFacturation() {
     var ttc = 0;
 
@@ -607,7 +678,7 @@ function majFacturation() {
             ttc += Number(valeur.replace(",", "."));
             */
 
-            ttc += GetMontant(formTr.children[3].innerText);
+            ttc += getMontant(formTr.children[3].innerText);
         }
     }
 
@@ -619,8 +690,12 @@ function majFacturation() {
     document.getElementById("totalTva").innerText = getFormatMillier((Math.round(ttc * txTva) * 100) / 100);
 }
 
-// Retourne la valeur numérique située dans une chaine
-function GetMontant(valeurStr) {
+/**
+ * Retourne la valeur numérique située dans une chaine de caractères
+ * \param Chaine de caractères avec le montant
+ * \return Retourne le montant débarassée des valeurs non-numériques
+ */
+function getMontant(valeurStr) {
     var r = "";
 
     // on remplace tout ce qui n'est pas numérique par rien
@@ -645,6 +720,10 @@ function GetMontant(valeurStr) {
 /////////////////////////////////////////////////////////////////////
 // Paramètres ///////////////////////////////////////////////////////
 
+/**
+ * Gestion des options situées dans le panneau des paramètres
+ * \param Evènement javascript
+ */
 function panneauParametres(event) {
     var nomBtn = event.srcElement.id;
 
@@ -676,7 +755,9 @@ function panneauParametres(event) {
     }
 }
 
-// applique le thème de jour ou de nuit
+/**
+ * applique le thème de jour ou de nuit
+ */
 function activationModeAff() {
     if (estModeJour) {
         document.getElementById("btnPageJour").classList.remove("btnBase");
@@ -699,6 +780,10 @@ function activationModeAff() {
     localStorage.setItem("estModeJour", estModeJour);
 }
 
+/**
+ * Fonction pour l'affichage de l'interface de sélection des devis
+ * \param Booléan pour afficher l'interface
+ */
 function affichageGestionDevis(afficher) {
     var form = document.getElementById("bodySelDevis")
 
@@ -710,6 +795,10 @@ function affichageGestionDevis(afficher) {
     }
 }
 
+/**
+ * Gestion des évènements pour l'interface de sélection des devis
+ * \param Evènement javascript
+ */
 function panneauGestionDevis(event) {
     var nomBtn = event.srcElement.id;
 
@@ -723,7 +812,9 @@ function panneauGestionDevis(event) {
     }
 }
 
-/* Active / désactive le panneau "Divers" */
+/**
+ * Active / désactive le panneau "Divers"
+ */
 function panneauDivers(event) {
     // TOGGLE : https://developer.mozilla.org/fr/docs/Web/API/Element/classList
     document.getElementById("divers").children[0].classList.toggle("masque");
@@ -740,7 +831,10 @@ function panneauDivers(event) {
     }*/
 }
 
-/* choix d'une option dans le panneau Divers */
+/**
+ * Choix d'une option dans le panneau Divers
+ * \param Evènement javascript
+ */
 function panneauSelDivers(event) {
     var form = event.srcElement.id;
 
@@ -751,7 +845,10 @@ function panneauSelDivers(event) {
     }
 }
 
-/* Choix d'une remise et de ses options */
+/**
+ * Choix d'une remise et de ses options
+ * \param Evènement javascript
+ */
 function panneauSelRemise(event) {
     var type = event.srcElement.localName;
 
@@ -772,7 +869,7 @@ function panneauSelRemise(event) {
                 document.getElementById("pourcRemise").readOnly = true;
                 document.getElementById("htRemise").readOnly = true;
 
-                var listArt = GenListeArticles();
+                var listArt = genListeArticles();
 
                 if (listArt != null && listArt.length > 0) {
                     var selArt = document.getElementById("selArticleRemise");
@@ -810,7 +907,7 @@ function panneauSelRemise(event) {
                 break;
 
             case "pourcRemise":
-                CalculRemisePourc(event);
+                calculRemisePourc(event);
                 break;
 
             case "validerChoixRemise":
@@ -818,7 +915,7 @@ function panneauSelRemise(event) {
 
                 var montantTtcRemise = document.getElementById("htRemise").value;
 
-                var nomBtnRadio = GetRadioSel();
+                var nomBtnRadio = getRadioSel();
 
                 if (
                     nomBtnRadio.length > 0 &&
@@ -867,14 +964,17 @@ function panneauSelRemise(event) {
     }
 }
 
-// calcul de la remise depuis le pourcentage accordé
-function CalculRemisePourc(event) {
+/**
+ * Calcul de la remise depuis le pourcentage accordé
+ * \param Evènement javascript
+ */
+function calculRemisePourc(event) {
     if (!event.srcElement.readOnly) {
         //var pourcentage = Number(document.getElementById("pourcRemise").value) / 100;
         var montantApplique = 0;
 
         // on regarde quel bouton radio est cochée
-        var nomBtnRadio = GetRadioSel();
+        var nomBtnRadio = getRadioSel();
 
         switch (nomBtnRadio) {
             case "remiseGlobale":
@@ -883,7 +983,7 @@ function CalculRemisePourc(event) {
 
             // récupération de la valeur de l'article
             case "remiseUnitaire":
-                montantApplique = GetMontant(document.getElementById(nomLigneDevis + idLigneRemise).children[3].innerText)
+                montantApplique = getMontant(document.getElementById(nomLigneDevis + idLigneRemise).children[3].innerText)
                 break;
         }
 
@@ -900,8 +1000,11 @@ function CalculRemisePourc(event) {
     }
 }
 
-/* Bouton radio choisi pour la remise */
-function GetRadioSel() {
+/**
+ * Bouton radio choisi pour la remise
+ * \return Retourne l'ID du radio-button
+ */
+function getRadioSel() {
     var formRadio = document.getElementsByName("choixRemise");
     var r = "";
 
@@ -917,8 +1020,11 @@ function GetRadioSel() {
     return r;
 }
 
-/* Retourne la liste des articles */
-function GenListeArticles() {
+/**
+ * Retourne la liste des articles
+ * \return Retourne un tableau contenant les articles
+ */
+function genListeArticles() {
     var listArticles = new Array();
 
     var lenTab = document.getElementById("corpsDevis").children.length;
@@ -935,7 +1041,10 @@ function GenListeArticles() {
     return listArticles;
 }
 
-// interdiction des caractères spéciaux du pavé numérique du clavier d'Android
+/**
+ * Interdiction des caractères spéciaux du pavé numérique du clavier d'Android
+ * \param Evènement javascript
+ */
 function paveNumAndroid(event) {
     // https://keycode.info/
     /*
@@ -955,7 +1064,7 @@ function paveNumAndroid(event) {
     */
 
     if (event.srcElement.id == "pourcRemise") {
-        CalculRemisePourc(event);
+        calculRemisePourc(event);
     }
 
     if (event.keyCode == 0) {
