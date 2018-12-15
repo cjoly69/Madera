@@ -76,6 +76,12 @@ tr {
     color: #fff;
 }
 
+.btnNeutre {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid white;
+    color: white;
+}
+
 /*
 .confirmationSupp {
     background: repeating-linear-gradient( 45deg, #fff0, #fff 10px, #f003 10px, #f003 20px );
@@ -100,6 +106,7 @@ tr {
     color: white;
 }
 
+#informationsClient,
 #selectionDevis {
     background-color: #666666;
 }

@@ -24,6 +24,8 @@ var idLigneRemise = null;
 
 var montantTtcFact = 8000;
 
+var attrRemise = "estRemise";
+
 /**
  * Gère la fin du chargement d'une page
  */
@@ -353,7 +355,7 @@ function ajoutLigneDevisSaisie() {
         var coupePrinc = ligneSaisie.cells[2].firstElementChild.value;
         var prix = ligneSaisie.cells[3].firstElementChild.value;
 
-        ajoutLigneDevis(gamme, modele, coupePrinc, prix);
+        ajoutLigneDevis(gamme, modele, coupePrinc, prix, false);
 
         /*
 
@@ -401,7 +403,7 @@ function ajoutLigneDevisSaisie() {
  * @param Prix
  * @returns Ligne de devis ajoutée
  */
-function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
+function ajoutLigneDevis(gamme, modele, coupePrinc, prix, estUneRemise) {
     // on copie le modèle d'une ligne du devis
     var nvlleLigne = document.getElementById("modele").cloneNode(true);
 
@@ -425,6 +427,10 @@ function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
     nvlleLigne.cells[1].innerText = modele;
     nvlleLigne.cells[2].innerText = coupePrinc;
     nvlleLigne.cells[3].innerText = prix;
+
+    if (estUneRemise) {
+        nvlleLigne.setAttribute(attrRemise,"true");
+    }
 
     // on ajoute la ligne et on l'a retourne
     return document.getElementById("corpsDevis").appendChild(nvlleLigne);
@@ -875,9 +881,21 @@ function panneauSelRemise(event) {
                     var selArt = document.getElementById("selArticleRemise");
                     selArt.innerHTML = "";
 
+                    /*
+
+                    listArticles.push({
+                        "numLign": numLign,
+                        "gamme": formTr.children[0].innerText,
+                        "modele": formTr.children[1].innerText,
+                        "prix": formTr.children[3].innerText,
+                    });
+
+                    */
+
                     for (var i = 0; i < listArt.length; i++) {
                         //selArt.innerHTML += '<div><input type="radio" name="choixRemiseGlobale_' + i + '" value="' + listArt[i] + '" /><label for="choixRemiseGlobale_' + i + '">' + listArt[i] + '</label><div>'
-                        selArt.innerHTML += '<option value="' + i + '">' + listArt[i] + '</option>';
+                        //selArt.innerHTML += '<option value="' + i + '">' + listArt[i] + '</option>';
+                        selArt.innerHTML += '<option value="' + i + '" prix="' + listArt[i]["prix"] + '">[' + listArt[i]["numLign"] + '] ' + listArt[i]["gamme"] + ' / ' + listArt[i]["modele"] + ' (' + listArt[i]["prix"] + ' €)</option>';
                     }
                 }
 
@@ -913,7 +931,9 @@ function panneauSelRemise(event) {
             case "validerChoixRemise":
                 // on regarde si un bouton radio est sélèctionné ainsi qu'un montant HT
 
-                var montantTtcRemise = document.getElementById("htRemise").value;
+                var montantTtcRemise = Number(getMontant(document.getElementById("htRemise").value));
+                var montantMax = Number(getMontant(document.getElementById("totalTtc").innerText));
+                var montantFacture = montantMax;
 
                 var nomBtnRadio = getRadioSel();
 
@@ -930,34 +950,40 @@ function panneauSelRemise(event) {
                     if (nomBtnRadio == "remiseUnitaire") {
                         var e = document.getElementById("selArticleRemise");
                         modele = e[e.selectedIndex].innerText.toUpperCase();
+                        montantMax = Number(getMontant(e[e.selectedIndex].getAttribute('prix')));
                     }
 
-                    var ligneAjoute = ajoutLigneDevis(gamme, modele, coupePrinc, prix);
+                    if (montantTtcRemise <= montantMax && montantTtcRemise <= montantFacture) {
+                        var ligneAjoute = ajoutLigneDevis(gamme, modele, coupePrinc, prix, true);
 
-                    // on supprime le bouton d'édition
-                    ligneAjoute.children[4].children[0].remove();
+                        // on supprime le bouton d'édition
+                        ligneAjoute.children[4].children[0].remove();
 
-                    idLigneRemise = null;
-                    document.getElementById("bodySelRemise").classList.add("masque");
+                        idLigneRemise = null;
+                        document.getElementById("bodySelRemise").classList.add("masque");
 
-                    // remet à zéro les boutons radio
-                    var formRadio = document.getElementsByName("choixRemise");
-                    if (formRadio != null) {
-                        for (var i = 0; i < formRadio.length; i++) {
+                        // remet à zéro les boutons radio
+                        var formRadio = document.getElementsByName("choixRemise");
+                        if (formRadio != null) {
+                            for (var i = 0; i < formRadio.length; i++) {
                                 formRadio[i].checked = false
+                            }
                         }
+
+                        // efface le contenu de la comboBox des articles
+                        document.getElementById("selArticleRemise").innerText = "";
+                        document.getElementById("selectionArticles").classList.add("masque");
+                        document.getElementById("pourcRemise").value = 0;
+                        document.getElementById("htRemise").value = 0;
+
+                        majFacturation();
                     }
-
-                    // efface le contenu de la comboBox des articles
-                    document.getElementById("selArticleRemise").innerText = "";
-                    document.getElementById("selectionArticles").classList.add("masque");
-                    document.getElementById("pourcRemise").value = 0;
-                    document.getElementById("htRemise").value = 0;
-
-                    majFacturation();
+                    else {
+                        alert("Le montant total de la remise ne peut dépasser la valeur de l'article ou de la facture.");
+                    }
                 }
                 else {
-                    alert("Vous devez choisir un type de remise ainsi qu'un montant HT supérieur à 0 pour valider cette remise.")
+                    alert("Vous devez choisir un type de remise ainsi qu'un montant HT supérieur à 0 pour valider cette remise.");
                 }
                 break;
         }
@@ -990,7 +1016,7 @@ function calculRemisePourc(event) {
         if (nomBtnRadio != "") {
             var pourcentage = Number(event.srcElement.value) / 100;
 
-            if (pourcentage <= 100 && pourcentage >= 0) {
+            if (pourcentage <= 1 && pourcentage >= 0) {
                 document.getElementById("htRemise").value = Math.round(pourcentage * montantApplique * 100) / 100;
             }
             else {
@@ -1031,10 +1057,22 @@ function genListeArticles() {
     for (var i = 0; i < lenTab; i++) {
         formTr = document.getElementById("corpsDevis").children[i];
 
-        if (formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis) {
+        // on ne prend que les articles, pas les remises
+        if (
+            formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis &&
+            formTr.getAttribute(attrRemise) == null
+        ) {
             var numLign = formTr.id.substring(nomLigneDevis.length, formTr.id.length);
 
-            listArticles.push("[" + numLign + "] " + formTr.children[0].innerText + " / " + formTr.children[1].innerText + " (" + formTr.children[3].innerText + " €)");
+            // https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Utiliser_les_objets#Utiliser_les_initialisateurs_d'objets
+            //listArticles.push("[" + numLign + "] " + formTr.children[0].innerText + " / " + formTr.children[1].innerText + " (" + formTr.children[3].innerText + " €)");
+
+            listArticles.push({
+                "numLign": numLign,
+                "gamme": formTr.children[0].innerText,
+                "modele": formTr.children[1].innerText,
+                "prix": formTr.children[3].innerText,
+            });
         }
     }
 
@@ -1082,6 +1120,14 @@ function paveNumAndroid(event) {
     }
 }
 
+/**
+ * Affichage ou non du panneau des informations clients
+ * @param Evènement javascript
+ */
+function panneauInfosClients(event) {
+    document.getElementById("bodyInfosClient").classList.toggle("masque");
+}
+
 /////////////////////////////////////////////////////////////////////
 // Evènements ///////////////////////////////////////////////////////
 
@@ -1100,6 +1146,12 @@ document.getElementById("parametres").addEventListener("click", panneauParametre
 
 // gestion de la fenêtre des devis
 document.getElementById("choixSelDevis").addEventListener("click", panneauGestionDevis, false);
+
+// informations client
+document.getElementById("infosClient").addEventListener("click", panneauInfosClients, false);
+
+// panneau des informations client
+document.getElementById("retourArriereInfosClient").addEventListener("click", panneauInfosClients, false);
 
 // menu "Divers"
 document.getElementById("divers").addEventListener("click", panneauDivers, false);

@@ -12,6 +12,11 @@ body > div,
     width: 100%;
 }
 
+#divers,
+#infosClient {
+    cursor: pointer;
+}
+
 /* CONNEXION */
 
 #connexion {
@@ -299,6 +304,12 @@ td > input {
     width: 44%;
 }
 
+.btnNeutre {
+    height: 40px;
+    font-size: 20px;
+    width: 100%;
+}
+
 /*
 .btnValidLign,
 .btnModLign,
@@ -446,6 +457,27 @@ td > input {
     box-shadow: inset 2px -2px 3px #aaa;
 }
 
+/* INFORMATIONS CLIENT */
+
+#bodyInfosClient {
+    position: absolute;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.78);
+    z-index: 9;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+}
+
+#informationsClient {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 20px;
+    border: 5px solid gray;
+    width: 60%;
+}
+
 /* GESTION DU DEVIS */
 
 #bodySelDevis {
@@ -556,6 +588,7 @@ td > input {
 #cordovaAttente {
     color: gray;
     display: flex;
+    text-align: center;
 }
 
 #cordovaAttente div {
