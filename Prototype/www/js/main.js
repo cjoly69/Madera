@@ -1050,7 +1050,7 @@ function getRadioSel() {
 
 /**
  * Retourne la liste des articles
- * @returns Retourne un tableau contenant les articles
+ * @returns Retourne un objet contenant les articles
  */
 function genListeArticles() {
     var listArticles = new Array();

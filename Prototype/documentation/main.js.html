@@ -52,6 +52,8 @@ var idLigneRemise = null;
 
 var montantTtcFact = 8000;
 
+var attrRemise = "estRemise";
+
 /**
  * Gère la fin du chargement d'une page
  */
@@ -381,7 +383,7 @@ function ajoutLigneDevisSaisie() {
         var coupePrinc = ligneSaisie.cells[2].firstElementChild.value;
         var prix = ligneSaisie.cells[3].firstElementChild.value;
 
-        ajoutLigneDevis(gamme, modele, coupePrinc, prix);
+        ajoutLigneDevis(gamme, modele, coupePrinc, prix, false);
 
         /*
 
@@ -429,7 +431,7 @@ function ajoutLigneDevisSaisie() {
  * @param Prix
  * @returns Ligne de devis ajoutée
  */
-function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
+function ajoutLigneDevis(gamme, modele, coupePrinc, prix, estUneRemise) {
     // on copie le modèle d'une ligne du devis
     var nvlleLigne = document.getElementById("modele").cloneNode(true);
 
@@ -453,6 +455,10 @@ function ajoutLigneDevis(gamme, modele, coupePrinc, prix) {
     nvlleLigne.cells[1].innerText = modele;
     nvlleLigne.cells[2].innerText = coupePrinc;
     nvlleLigne.cells[3].innerText = prix;
+
+    if (estUneRemise) {
+        nvlleLigne.setAttribute(attrRemise,"true");
+    }
 
     // on ajoute la ligne et on l'a retourne
     return document.getElementById("corpsDevis").appendChild(nvlleLigne);
@@ -778,7 +784,9 @@ function panneauParametres(event) {
             break;
 
         case "btnDeconnexion":
-            decnxUtilisateur();
+            if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
+                decnxUtilisateur();
+            }
             break;
     }
 }
@@ -903,9 +911,21 @@ function panneauSelRemise(event) {
                     var selArt = document.getElementById("selArticleRemise");
                     selArt.innerHTML = "";
 
+                    /*
+
+                    listArticles.push({
+                        "numLign": numLign,
+                        "gamme": formTr.children[0].innerText,
+                        "modele": formTr.children[1].innerText,
+                        "prix": formTr.children[3].innerText,
+                    });
+
+                    */
+
                     for (var i = 0; i &lt; listArt.length; i++) {
                         //selArt.innerHTML += '&lt;div>&lt;input type="radio" name="choixRemiseGlobale_' + i + '" value="' + listArt[i] + '" />&lt;label for="choixRemiseGlobale_' + i + '">' + listArt[i] + '&lt;/label>&lt;div>'
-                        selArt.innerHTML += '&lt;option value="' + i + '">' + listArt[i] + '&lt;/option>';
+                        //selArt.innerHTML += '&lt;option value="' + i + '">' + listArt[i] + '&lt;/option>';
+                        selArt.innerHTML += '&lt;option value="' + i + '" prix="' + listArt[i]["prix"] + '">[' + listArt[i]["numLign"] + '] ' + listArt[i]["gamme"] + ' / ' + listArt[i]["modele"] + ' (' + listArt[i]["prix"] + ' €)&lt;/option>';
                     }
                 }
 
@@ -941,7 +961,9 @@ function panneauSelRemise(event) {
             case "validerChoixRemise":
                 // on regarde si un bouton radio est sélèctionné ainsi qu'un montant HT
 
-                var montantTtcRemise = document.getElementById("htRemise").value;
+                var montantTtcRemise = Number(getMontant(document.getElementById("htRemise").value));
+                var montantMax = Number(getMontant(document.getElementById("totalTtc").innerText));
+                var montantFacture = montantMax;
 
                 var nomBtnRadio = getRadioSel();
 
@@ -958,34 +980,40 @@ function panneauSelRemise(event) {
                     if (nomBtnRadio == "remiseUnitaire") {
                         var e = document.getElementById("selArticleRemise");
                         modele = e[e.selectedIndex].innerText.toUpperCase();
+                        montantMax = Number(getMontant(e[e.selectedIndex].getAttribute('prix')));
                     }
 
-                    var ligneAjoute = ajoutLigneDevis(gamme, modele, coupePrinc, prix);
+                    if (montantTtcRemise &lt;= montantMax &amp;&amp; montantTtcRemise &lt;= montantFacture) {
+                        var ligneAjoute = ajoutLigneDevis(gamme, modele, coupePrinc, prix, true);
 
-                    // on supprime le bouton d'édition
-                    ligneAjoute.children[4].children[0].remove();
+                        // on supprime le bouton d'édition
+                        ligneAjoute.children[4].children[0].remove();
 
-                    idLigneRemise = null;
-                    document.getElementById("bodySelRemise").classList.add("masque");
+                        idLigneRemise = null;
+                        document.getElementById("bodySelRemise").classList.add("masque");
 
-                    // remet à zéro les boutons radio
-                    var formRadio = document.getElementsByName("choixRemise");
-                    if (formRadio != null) {
-                        for (var i = 0; i &lt; formRadio.length; i++) {
+                        // remet à zéro les boutons radio
+                        var formRadio = document.getElementsByName("choixRemise");
+                        if (formRadio != null) {
+                            for (var i = 0; i &lt; formRadio.length; i++) {
                                 formRadio[i].checked = false
+                            }
                         }
+
+                        // efface le contenu de la comboBox des articles
+                        document.getElementById("selArticleRemise").innerText = "";
+                        document.getElementById("selectionArticles").classList.add("masque");
+                        document.getElementById("pourcRemise").value = 0;
+                        document.getElementById("htRemise").value = 0;
+
+                        majFacturation();
                     }
-
-                    // efface le contenu de la comboBox des articles
-                    document.getElementById("selArticleRemise").innerText = "";
-                    document.getElementById("selectionArticles").classList.add("masque");
-                    document.getElementById("pourcRemise").value = 0;
-                    document.getElementById("htRemise").value = 0;
-
-                    majFacturation();
+                    else {
+                        alert("Le montant total de la remise ne peut dépasser la valeur de l'article ou de la facture.");
+                    }
                 }
                 else {
-                    alert("Vous devez choisir un type de remise ainsi qu'un montant HT supérieur à 0 pour valider cette remise.")
+                    alert("Vous devez choisir un type de remise ainsi qu'un montant HT supérieur à 0 pour valider cette remise.");
                 }
                 break;
         }
@@ -1018,7 +1046,7 @@ function calculRemisePourc(event) {
         if (nomBtnRadio != "") {
             var pourcentage = Number(event.srcElement.value) / 100;
 
-            if (pourcentage &lt;= 100 &amp;&amp; pourcentage >= 0) {
+            if (pourcentage &lt;= 1 &amp;&amp; pourcentage >= 0) {
                 document.getElementById("htRemise").value = Math.round(pourcentage * montantApplique * 100) / 100;
             }
             else {
@@ -1050,7 +1078,7 @@ function getRadioSel() {
 
 /**
  * Retourne la liste des articles
- * @returns Retourne un tableau contenant les articles
+ * @returns Retourne un objet contenant les articles
  */
 function genListeArticles() {
     var listArticles = new Array();
@@ -1059,10 +1087,22 @@ function genListeArticles() {
     for (var i = 0; i &lt; lenTab; i++) {
         formTr = document.getElementById("corpsDevis").children[i];
 
-        if (formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis) {
+        // on ne prend que les articles, pas les remises
+        if (
+            formTr.id.substring(0, nomLigneDevis.length) == nomLigneDevis &amp;&amp;
+            formTr.getAttribute(attrRemise) == null
+        ) {
             var numLign = formTr.id.substring(nomLigneDevis.length, formTr.id.length);
 
-            listArticles.push("[" + numLign + "] " + formTr.children[0].innerText + " / " + formTr.children[1].innerText + " (" + formTr.children[3].innerText + " €)");
+            // https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Utiliser_les_objets#Utiliser_les_initialisateurs_d'objets
+            //listArticles.push("[" + numLign + "] " + formTr.children[0].innerText + " / " + formTr.children[1].innerText + " (" + formTr.children[3].innerText + " €)");
+
+            listArticles.push({
+                "numLign": numLign,
+                "gamme": formTr.children[0].innerText,
+                "modele": formTr.children[1].innerText,
+                "prix": formTr.children[3].innerText,
+            });
         }
     }
 
@@ -1110,6 +1150,14 @@ function paveNumAndroid(event) {
     }
 }
 
+/**
+ * Affichage ou non du panneau des informations clients
+ * @param Evènement javascript
+ */
+function panneauInfosClients(event) {
+    document.getElementById("bodyInfosClient").classList.toggle("masque");
+}
+
 /////////////////////////////////////////////////////////////////////
 // Evènements ///////////////////////////////////////////////////////
 
@@ -1128,6 +1176,12 @@ document.getElementById("parametres").addEventListener("click", panneauParametre
 
 // gestion de la fenêtre des devis
 document.getElementById("choixSelDevis").addEventListener("click", panneauGestionDevis, false);
+
+// informations client
+document.getElementById("infosClient").addEventListener("click", panneauInfosClients, false);
+
+// panneau des informations client
+document.getElementById("retourArriereInfosClient").addEventListener("click", panneauInfosClients, false);
 
 // menu "Divers"
 document.getElementById("divers").addEventListener("click", panneauDivers, false);
@@ -1155,13 +1209,13 @@ window.onload = finChargementPage;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#activationModeAff">activationModeAff</a></li><li><a href="global.html#activeBtn">activeBtn</a></li><li><a href="global.html#activePage">activePage</a></li><li><a href="global.html#affichageGestionDevis">affichageGestionDevis</a></li><li><a href="global.html#ajoutLigneDevis">ajoutLigneDevis</a></li><li><a href="global.html#ajoutLigneDevisSaisie">ajoutLigneDevisSaisie</a></li><li><a href="global.html#calculRemisePourc">calculRemisePourc</a></li><li><a href="global.html#changePage">changePage</a></li><li><a href="global.html#cnxModeAffichage">cnxModeAffichage</a></li><li><a href="global.html#cnxUtilisateur">cnxUtilisateur</a></li><li><a href="global.html#controleSaisie">controleSaisie</a></li><li><a href="global.html#decnxUtilisateur">decnxUtilisateur</a></li><li><a href="global.html#desactiveBtn">desactiveBtn</a></li><li><a href="global.html#desactivePages">desactivePages</a></li><li><a href="global.html#desactiveTsBtn">desactiveTsBtn</a></li><li><a href="global.html#finChargementPage">finChargementPage</a></li><li><a href="global.html#genListeArticles">genListeArticles</a></li><li><a href="global.html#gestionConnexion">gestionConnexion</a></li><li><a href="global.html#gestionDevis">gestionDevis</a></li><li><a href="global.html#getFormatMillier">getFormatMillier</a></li><li><a href="global.html#getMontant">getMontant</a></li><li><a href="global.html#getRadioSel">getRadioSel</a></li><li><a href="global.html#majFacturation">majFacturation</a></li><li><a href="global.html#majLigneDevis">majLigneDevis</a></li><li><a href="global.html#modifBtnSaisieLigne">modifBtnSaisieLigne</a></li><li><a href="global.html#modificationLigneDevis">modificationLigneDevis</a></li><li><a href="global.html#nettoyageSaisieLigne">nettoyageSaisieLigne</a></li><li><a href="global.html#panneauDivers">panneauDivers</a></li><li><a href="global.html#panneauGestionDevis">panneauGestionDevis</a></li><li><a href="global.html#panneauParametres">panneauParametres</a></li><li><a href="global.html#panneauSelDivers">panneauSelDivers</a></li><li><a href="global.html#panneauSelRemise">panneauSelRemise</a></li><li><a href="global.html#paveNumAndroid">paveNumAndroid</a></li><li><a href="global.html#suppressionLigneDevis">suppressionLigneDevis</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#activationModeAff">activationModeAff</a></li><li><a href="global.html#activeBtn">activeBtn</a></li><li><a href="global.html#activePage">activePage</a></li><li><a href="global.html#affichageGestionDevis">affichageGestionDevis</a></li><li><a href="global.html#ajoutLigneDevis">ajoutLigneDevis</a></li><li><a href="global.html#ajoutLigneDevisSaisie">ajoutLigneDevisSaisie</a></li><li><a href="global.html#calculRemisePourc">calculRemisePourc</a></li><li><a href="global.html#changePage">changePage</a></li><li><a href="global.html#cnxModeAffichage">cnxModeAffichage</a></li><li><a href="global.html#cnxUtilisateur">cnxUtilisateur</a></li><li><a href="global.html#controleSaisie">controleSaisie</a></li><li><a href="global.html#decnxUtilisateur">decnxUtilisateur</a></li><li><a href="global.html#desactiveBtn">desactiveBtn</a></li><li><a href="global.html#desactivePages">desactivePages</a></li><li><a href="global.html#desactiveTsBtn">desactiveTsBtn</a></li><li><a href="global.html#finChargementPage">finChargementPage</a></li><li><a href="global.html#genListeArticles">genListeArticles</a></li><li><a href="global.html#gestionConnexion">gestionConnexion</a></li><li><a href="global.html#gestionDevis">gestionDevis</a></li><li><a href="global.html#getFormatMillier">getFormatMillier</a></li><li><a href="global.html#getMontant">getMontant</a></li><li><a href="global.html#getRadioSel">getRadioSel</a></li><li><a href="global.html#majFacturation">majFacturation</a></li><li><a href="global.html#majLigneDevis">majLigneDevis</a></li><li><a href="global.html#modifBtnSaisieLigne">modifBtnSaisieLigne</a></li><li><a href="global.html#modificationLigneDevis">modificationLigneDevis</a></li><li><a href="global.html#nettoyageSaisieLigne">nettoyageSaisieLigne</a></li><li><a href="global.html#panneauDivers">panneauDivers</a></li><li><a href="global.html#panneauGestionDevis">panneauGestionDevis</a></li><li><a href="global.html#panneauInfosClients">panneauInfosClients</a></li><li><a href="global.html#panneauParametres">panneauParametres</a></li><li><a href="global.html#panneauSelDivers">panneauSelDivers</a></li><li><a href="global.html#panneauSelRemise">panneauSelRemise</a></li><li><a href="global.html#paveNumAndroid">paveNumAndroid</a></li><li><a href="global.html#suppressionLigneDevis">suppressionLigneDevis</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Dec 10 2018 11:21:00 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Dec 17 2018 10:14:48 GMT+0100 (Paris, Madrid)
 </footer>
 
 <script> prettyPrint(); </script>
