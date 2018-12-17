@@ -756,7 +756,9 @@ function panneauParametres(event) {
             break;
 
         case "btnDeconnexion":
-            decnxUtilisateur();
+            if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
+                decnxUtilisateur();
+            }
             break;
     }
 }
