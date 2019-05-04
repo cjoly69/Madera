@@ -366,6 +366,16 @@ td > input {
     height: 40px !important;
 }
 
+#typeFinition > div {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+}
+
+#typeFinition > div:first-of-type {
+    line-height: 60px;
+}
+
 #divers {
     background-image: url(./img/divers.svg);
     background-repeat: no-repeat;
